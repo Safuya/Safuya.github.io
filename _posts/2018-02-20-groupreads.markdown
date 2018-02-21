@@ -47,5 +47,4 @@ There are some future enhancements that I'd like to make to the gem. I have prov
 * Provide a help command on the CLI.
 * Improve the feature tests to check the output of the newbooks option.
 * Refactor the addition of the key-value pairs for the HTTP GETs into a method.
-* Uncouple the tests from the changeable group data.
 * Create docs.
