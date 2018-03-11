@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Getting started on your CLI Gem"
-date:       2018-03-11 09:43:59 +0000
+date:       2018-03-11 05:44:00 -0400
 permalink:  getting_started_on_your_cli_gem
 ---
 
@@ -170,25 +170,29 @@ And try again.
 ```
 // ♥ bundle exec rspec
 
-An error occurred while loading ./spec/group_spec.rb.
-Failure/Error:
-  RSpec.describe Group do
+Group
+  #name
+    can be read and written to (FAILED - 1)
 
-    describe '#name' do
-      it 'can be read and written to' do
-        test_group = Group.new
-        test_group.name = "Sword and Laser"
-        expect(test_group.name).to eql("Sword and Laser")
-      end
-    end
+Groupreads
+  has a version number
 
+Failures:
 
-NameError:
-  uninitialized constant Group
-# ./spec/group_spec.rb:1:in `<top (required)>'
+  1) Group#name can be read and written to
+     Failure/Error: test_group.name = "Sword and Laser"
 
-Finished in 0.00024 seconds (files took 0.13006 seconds to load)
-0 examples, 0 failures, 1 error occurred outside of examples
+     NoMethodError:
+       undefined method `name=' for #<Group:0x007fa06aa859a0>
+     # ./spec/group_spec.rb:8:in `block (3 levels) in <top (required)>'
+
+Finished in 0.00566 seconds (files took 0.36264 seconds to load)
+2 examples, 1 failure
+
+Failed examples:
+
+rspec ./spec/group_spec.rb:6 # Group#name can be read and written to
+
 ```
 
 That's better. Let's add the attribute accessor to lib/group.rb.
