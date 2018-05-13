@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "The Root of Absolutely Relatively Awesome Links"
-date:       2018-05-13 07:58:07 +0000
+date:       2018-05-13 03:58:08 -0400
 permalink:  the_root_of_absolutely_relatively_awesome_links
 ---
 
@@ -10,6 +10,7 @@ There have been some questions in the Slack in the past on broken links. This po
 * Absolute
 * Root
 * Relative
+
 So now, hopefully, this blog posts title makes sense.
 ## Absolute
 Absolute links are the easiest to understand. You give the entire link. The below shows this in a pretty diagram.
