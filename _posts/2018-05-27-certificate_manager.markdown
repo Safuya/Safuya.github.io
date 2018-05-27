@@ -1,12 +1,12 @@
 ---
 layout: post
 title:      "Certificate Manager"
-date:       2018-05-27 19:33:21 +0000
+date:       2018-05-27 15:33:22 -0400
 permalink:  certificate_manager
 ---
 
 
-For my project, I made a website to manage SSL certificates. In my current job, finding out which expiring certificates are hosted on which load balancers is one of the main problems I have.
+For my project, I made a website to manage SSL certificates. In my current job, finding out which expiring certificates are hosted on which load balancers is one of the main problems I have. The repository for this project can be found [here](https://github.com/safuya/certificate-manager).
 
 To do this, I first came up with a sketch for the sign in and certificates page on Balsamiq. You can see the first of these for sign in below.
 
