@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>The Root of Absolutely Relatively Awesome Links</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/the-root-of-absolutely-relatively-awesome-links.html" rel="bookmark"
+           title="Permalink to The Root of Absolutely Relatively Awesome Links">The Root of Absolutely Relatively Awesome Links</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-05-13T03:58:00+01:00">
+                Published: Sun 13 May 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+
+</footer><!-- /.post-info -->      <p>There have been some questions in the Slack in the past on broken links. This post is going to try to give a succinct explanation of different link types, and how they relate to each other for your Sinatra project and going forward with none magic frameworks such as Rails. There are three different main types of links:
+<em> Absolute
+</em> Root
+* Relative</p>
+<p>So now, hopefully, this blog posts title makes sense.</p>
+<h2>Absolute</h2>
+<p>Absolute links are the easiest to understand. You give the entire link. The below shows this in a pretty diagram.</p>
+<p><img alt="Absolute Links" src="https://s3-eu-west-1.amazonaws.com/nemene-share/absolute-path.png"></p>
+<p>If you give the full link, you can be sure that in your specific circumstances, it's going to work right now. The problem is, as soon as you host it, the link may break. For example, http://localhost:3000/posts/23 is not the same as https://safuya.info/posts/23. Because of this, you should only use absolute links for links external to your site. A typical example of this is for externally hosted CSS frameworks.</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://www.awesomestyles.com/style.css&quot;</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<h2>Root</h2>
+<p>Root links are links that work from the main folder in your project. To use this, you need to put a / on the front of your link.</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/posts/23&quot;</span><span class="p">&gt;</span>Click Bait!<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>Assuming you're hosting this on https://www.safuya.info, you would then link to https://www.safuya.info/posts/23. These links are not too confusing, as they won't change the location as you move around the site.
+A caveat with Sinatra and Rails though is that the root directory includes directories that you may not expect.</p>
+<h3>Sinatra Root</h3>
+<p>Sinatra adds a default location to your root directory. The /public folder, which you would expect to be /public/amazing-image.png is accessible via /amazing-image.png. You can change the default for this if you would like in /app/controllers/application_controller.rb. The below example shows a typical application controller. set :public_folder, 'public' is setting the public folder to be in the root directory, and to allow routing to it. You can then place static files in there, such as CSS, javascript and images.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">configure</span> <span class="k">do</span>
+    <span class="n">set</span> <span class="ss">:public_folder</span><span class="p">,</span> <span class="s1">&#39;public&#39;</span>
+    <span class="n">set</span> <span class="ss">:views</span><span class="p">,</span> <span class="s1">&#39;app/views&#39;</span>
+    <span class="n">enable</span> <span class="ss">:sessions</span>
+    <span class="n">set</span> <span class="ss">:session_secret</span><span class="p">,</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;session_secret&#39;</span><span class="o">]</span>
+  <span class="k">end</span>
+
+  <span class="n">helpers</span> <span class="no">Flash</span><span class="p">,</span> <span class="no">Authorization</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<h3>Rails Root</h3>
+<p>In Rails, it's a bit more complicated. The main place to add your static files, such as CSS, javascript and images is the asset pipeline, located in /app/assets. There will be images, javascripts and stylesheets by default. If you want to add additional folders, such as fonts, you can do it in /config/initializers/assets.rb.</p>
+<div class="highlight"><pre><span></span><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">paths</span> <span class="o">&lt;&lt;</span> <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="s1">&#39;fonts&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Rails will then put everything in the assets into a folder. When you use the below, which rails generates automatically for you:</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s1">&#39;application&#39;</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;data-turbolinks-track&#39;</span><span class="p">:</span> <span class="s1">&#39;reload&#39;</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>It will give these assets a random identifier such as the below:</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">media</span><span class="o">=</span><span class="s">&quot;all&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/assets/application.self-0b34aa4a80f4198fbe85c7f3af8b8f79cee409ca96c3de76dd28dc08a75b0f73.css?body=1&quot;</span> <span class="na">data-turbolinks-track</span><span class="o">=</span><span class="s">&quot;reload&quot;</span> <span class="p">/&gt;</span>
+</pre></div>
+
+
+<p>There are a few reasons Rails does this, but that's for another blog post.</p>
+<h2>Relative Links</h2>
+<p>Relative links can be useful, but they are where people end up getting confused, especially with the above changes in Sinatra and Rails folder layouts with obfuscated configuration files. Relative links work based on your current location. If we have the below:</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;22&quot;</span><span class="p">&gt;</span>Last<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;24&quot;</span><span class="p">&gt;</span>Next<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>If you are hosting this from https://www.safuya.info/posts/23 it will link to https://www.safuya.info/posts/22 and https://www.safuya.info/posts/24. In this situation, this works pretty well. You don't need to type in the full path. It keeps your code shorter, and it's descriptive with the text.
+The problem comes if you're using relative links for CSS in your main template. You're working on a Sinatra project, and you are working on your root page. You link to your stylesheet link so:</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;style.css&quot;</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>In your root page, this correctly links to your style.css with the magic of relative links.</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://localhost:9393/style.css&quot;</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>You then continue and build out a model, controller and view for posts. Your link then stops working. Why? Because it's now doing the below:</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://localhost:9393/posts/style.css&quot;</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>You haven't got your style.css in your posts folder so that it won't load your styles.
+To fix this, change to using a root link.</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/style.css&quot;</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>It will then always render correctly.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

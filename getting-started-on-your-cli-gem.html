@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Getting started on your CLI Gem</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/getting-started-on-your-cli-gem.html" rel="bookmark"
+           title="Permalink to Getting started on your CLI Gem">Getting started on your CLI Gem</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-11T05:44:00+00:00">
+                Published: Sun 11 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+
+</footer><!-- /.post-info -->      <p>This is a step by step tutorial on getting started with your CLI gem, and how to do that using test-driven development.</p>
+<h2>How?</h2>
+<p>The concept of test driven development is straightforward. You write out tests before you start writing your code. You then write code to get your tests passing. Let's start building out our gem. I want to make a gem that shows my books compared to my book clubs books and adds them for me. Let's start by creating a structure for the gem using bundler.</p>
+<div class="highlight"><pre><span></span>// ♥ bundle gem groupreads
+Creating gem <span class="s1">&#39;groupreads&#39;</span>...
+MIT License enabled in config
+Code of conduct enabled in config
+      create  groupreads/Gemfile
+      create  groupreads/lib/groupreads.rb
+      create  groupreads/lib/groupreads/version.rb
+      create  groupreads/groupreads.gemspec
+      create  groupreads/Rakefile
+      create  groupreads/README.md
+      create  groupreads/bin/console
+      create  groupreads/bin/setup
+      create  groupreads/.gitignore
+      create  groupreads/.travis.yml
+      create  groupreads/.rspec
+      create  groupreads/spec/spec_helper.rb
+      create  groupreads/spec/groupreads_spec.rb
+      create  groupreads/LICENSE.txt
+      create  groupreads/CODE_OF_CONDUCT.md
+Initializing git repo in /Users/roberthughes/src/sandbox/groupreads
+<span class="o">[</span><span class="m">07</span>:47:36<span class="o">]</span> sandbox
+// ♥  <span class="nb">cd</span> groupreads
+</pre></div>
+
+
+<p>Great. Oh, there's already a spec file. Let's try running our tests.</p>
+<div class="highlight"><pre><span></span><span class="o">[</span><span class="m">07</span>:50:57<span class="o">]</span> groupreads
+// ♥ rspec
+/Users/roberthughes/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0/bundler/rubygems_integration.rb:65:in <span class="sb">`</span>rescue in validate<span class="s1">&#39;: The gemspec at /Users/roberthughes/src/sandbox/groupreads/groupreads.gemspec is not valid. Please fix this gemspec. (Gem::InvalidSpecificationException)</span>
+<span class="s1">The validation error was &#39;</span><span class="s2">&quot;FIXME&quot;</span> or <span class="s2">&quot;TODO&quot;</span> is not a description<span class="err">&#39;</span>
+</pre></div>
+
+
+<p>So, I need to edit the gemspec. It looks like it's on line 12 and 13.</p>
+<div class="highlight"><pre><span></span>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{Compare your books to your group books.}</span>
+  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{Compare your books to your book clubs books.}</span>
+</pre></div>
+
+
+<p>Let's try that again.</p>
+<div class="highlight"><pre><span></span>// ♥ bundle <span class="nb">exec</span> rspec
+
+Groupreads
+  has a version number
+  does something useful <span class="o">(</span>FAILED - <span class="m">1</span><span class="o">)</span>
+
+Failures:
+
+  <span class="m">1</span><span class="o">)</span> Groupreads does something useful
+     Failure/Error: expect<span class="o">(</span><span class="nb">false</span><span class="o">)</span>.to eq<span class="o">(</span><span class="nb">true</span><span class="o">)</span>
+
+       expected: <span class="nb">true</span>
+            got: <span class="nb">false</span>
+
+       <span class="o">(</span>compared <span class="nv">using</span> <span class="o">==)</span>
+     <span class="c1"># ./spec/groupreads_spec.rb:7:in `block (2 levels) in &lt;top (required)&gt;&#39;</span>
+
+Finished in <span class="m">0</span>.0286 seconds <span class="o">(</span>files took <span class="m">0</span>.14683 seconds to load<span class="o">)</span>
+<span class="m">2</span> examples, <span class="m">1</span> failure
+
+Failed examples:
+
+rspec ./spec/groupreads_spec.rb:6 <span class="c1"># Groupreads does something useful</span>
+
+<span class="o">[</span><span class="m">08</span>:38:13<span class="o">]</span> <span class="o">(</span>master<span class="o">)</span> groupreads
+</pre></div>
+
+
+<p>Awesome! Let's follow their suggestion. So, what do we want to do next? Let's start by making a group, starting with our test of course.</p>
+<div class="highlight"><pre><span></span><span class="no">RSpec</span><span class="o">.</span><span class="n">describe</span> <span class="no">Group</span> <span class="k">do</span>
+
+  <span class="n">describe</span> <span class="s1">&#39;#name&#39;</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s1">&#39;can be read and written to&#39;</span> <span class="k">do</span>
+      <span class="n">test_group</span> <span class="o">=</span> <span class="no">Group</span><span class="o">.</span><span class="n">new</span>
+      <span class="n">test_group</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Sword and Laser&quot;</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">test_group</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eql</span><span class="p">(</span><span class="s2">&quot;Sword and Laser&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
+
+
+<p>So, how do you decide what goes in this test? The answer is simple. If I was using this code, how would I want to use it? What would I want to run, and what do I expect back from this test?</p>
+<p>Run the tests.</p>
+<div class="highlight"><pre><span></span>// ♥ bundle <span class="nb">exec</span> rspec
+
+An error occurred <span class="k">while</span> loading ./spec/group_spec.rb.
+Failure/Error:
+  RSpec.describe Group <span class="k">do</span>
+
+    describe <span class="s1">&#39;#name&#39;</span> <span class="k">do</span>
+      it <span class="s1">&#39;can be read and written to&#39;</span> <span class="k">do</span>
+        <span class="nv">test_group</span> <span class="o">=</span> Group.new
+        test_group.name <span class="o">=</span> <span class="s2">&quot;Sword and Laser&quot;</span>
+        expect<span class="o">(</span>test_group.name<span class="o">)</span>.to eql<span class="o">(</span><span class="s2">&quot;Sword and Laser&quot;</span><span class="o">)</span>
+      end
+    end
+
+
+NameError:
+  uninitialized constant Group
+<span class="c1"># ./spec/group_spec.rb:1:in `&lt;top (required)&gt;&#39;</span>
+
+Finished in <span class="m">0</span>.00027 seconds <span class="o">(</span>files took <span class="m">0</span>.13815 seconds to load<span class="o">)</span>
+<span class="m">0</span> examples, <span class="m">0</span> failures, <span class="m">1</span> error occurred outside of examples
+</pre></div>
+
+
+<p>Great. Now we're getting on to the sort of thing you'll be seeing in the Learn labs. Let's make lib/group.rb.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Group</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>And try running our tests.</p>
+<div class="highlight"><pre><span></span>// ♥ bundle <span class="nb">exec</span> rspec
+
+An error occurred <span class="k">while</span> loading ./spec/group_spec.rb.
+Failure/Error:
+  RSpec.describe Group <span class="k">do</span>
+
+    describe <span class="s1">&#39;#name&#39;</span> <span class="k">do</span>
+      it <span class="s1">&#39;can be read and written to&#39;</span> <span class="k">do</span>
+        <span class="nv">test_group</span> <span class="o">=</span> Group.new
+        test_group.name <span class="o">=</span> <span class="s2">&quot;Sword and Laser&quot;</span>
+        expect<span class="o">(</span>test_group.name<span class="o">)</span>.to eql<span class="o">(</span><span class="s2">&quot;Sword and Laser&quot;</span><span class="o">)</span>
+      end
+    end
+
+
+NameError:
+  uninitialized constant Group
+<span class="c1"># ./spec/group_spec.rb:1:in `&lt;top (required)&gt;&#39;</span>
+
+Finished in <span class="m">0</span>.00024 seconds <span class="o">(</span>files took <span class="m">0</span>.13006 seconds to load<span class="o">)</span>
+<span class="m">0</span> examples, <span class="m">0</span> failures, <span class="m">1</span> error occurred outside of examples
+</pre></div>
+
+
+<p>Oops. It looks like I missed the requiring the file. Let's add "require" to the rspec.</p>
+<div class="highlight"><pre><span></span><span class="nb">require</span> <span class="s1">&#39;group&#39;</span>
+
+<span class="no">RSpec</span><span class="o">.</span><span class="n">describe</span> <span class="no">Group</span> <span class="k">do</span>
+<span class="o">...</span>
+</pre></div>
+
+
+<p>And try again.</p>
+<div class="highlight"><pre><span></span>// ♥ bundle <span class="nb">exec</span> rspec
+
+Group
+  <span class="c1">#name</span>
+    can be <span class="nb">read</span> and written to <span class="o">(</span>FAILED - <span class="m">1</span><span class="o">)</span>
+
+Groupreads
+  has a version number
+
+Failures:
+
+  <span class="m">1</span><span class="o">)</span> Group#name can be <span class="nb">read</span> and written to
+     Failure/Error: test_group.name <span class="o">=</span> <span class="s2">&quot;Sword and Laser&quot;</span>
+
+     NoMethodError:
+       undefined method <span class="sb">`</span><span class="nv">name</span><span class="o">=</span><span class="s1">&#39; for #&lt;Group:0x007fa06aa859a0&gt;</span>
+<span class="s1">     # ./spec/group_spec.rb:8:in `block (3 levels) in &lt;top (required)&gt;&#39;</span>
+
+Finished in <span class="m">0</span>.00566 seconds <span class="o">(</span>files took <span class="m">0</span>.36264 seconds to load<span class="o">)</span>
+<span class="m">2</span> examples, <span class="m">1</span> failure
+
+Failed examples:
+
+rspec ./spec/group_spec.rb:6 <span class="c1"># Group#name can be read and written to</span>
+</pre></div>
+
+
+<p>That's better. Let's add the attribute accessor to lib/group.rb.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Group</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+
+<span class="k">end</span>
+</pre></div>
+
+
+<p>And test.</p>
+<div class="highlight"><pre><span></span>// ♥ bundle <span class="nb">exec</span> rspec
+
+Group
+  <span class="c1">#name</span>
+    can be <span class="nb">read</span> and written to
+
+Groupreads
+  has a version number
+
+Finished in <span class="m">0</span>.00503 seconds <span class="o">(</span>files took <span class="m">0</span>.11312 seconds to load<span class="o">)</span>
+<span class="m">2</span> examples, <span class="m">0</span> failures
+</pre></div>
+
+
+<p>Awesome. Time to add your next feature. What do you want your groups to do? How do you want to call that functionality? What output do you expect back?</p>
+<h2>Why</h2>
+<p>So why do you want to develop like this? Isn't it just slowing me down? I could have written the above example in half the time without the test.</p>
+<p>Further down the road, you may want to edit the functionality. You have the documentation provided by the tests to remind you of what you thought your requirements were at the time. You can use this documentation along with the increased understanding you have of your app to update the requirements, edit what you currently have to make it meet your new needs, and check that all the features you've added in the meantime haven't broken, or fix them if they have.</p>
+<p>It helps keep you focused on what you need. I've gone through writing features for an application, then I've gone back later and realised that I never ended up using the functionality that I created. With test driven development, it helps keep me focused on what needs developing, and why that feature requires developing.</p>
+<h2>Summary and other resources</h2>
+<p>A couple of excellent resources for test-driven development are:
+Effective Testing with RSpec 3 - Made by the current developers of RSpec. It goes into a lot of the extra features.
+<a href="http://bundler.io/v1.16/guides/creating_gem.html">Bundler: How to create a Ruby gem</a></p>
+<p>Even if you don't use test-driven development now, keep it in mind, especially when you're at those painful moments where you feel completely lost in an error that seems to go all the way through your app. Test-driven development could save your sanity!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Building An Unbeatable Tic Tac Toe AI</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/building-an-unbeatable-tic-tac-toe-ai.html" rel="bookmark"
+           title="Permalink to Building An Unbeatable Tic Tac Toe AI">Building An Unbeatable Tic Tac Toe AI</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-09T07:51:00+00:00">
+                Published: Fri 09 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+
+</footer><!-- /.post-info -->      <p>The first major challenge that I faced with the coding boot camp was building an unbeatable Tic-Tac-Toe AI. I have managed to create an algorithm to solve this problem, with only one move being hard coded.</p>
+<p>The overarching logic of my program is this the move method, found below.</p>
+<div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+      <span class="vi">@board</span> <span class="o">=</span> <span class="n">board</span>
+      <span class="k">if</span> <span class="n">o_cells</span><span class="o">.</span><span class="n">empty?</span> <span class="o">&amp;&amp;</span> <span class="n">empty_cells</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;5&quot;</span>
+      <span class="k">end</span>
+      <span class="c1"># Only include empty cells on the array feeding in to the freq table</span>
+      <span class="n">valid_selection</span> <span class="o">=</span> <span class="n">weighted_selection</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">ws</span><span class="o">|</span>
+        <span class="n">empty_cells</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
+      <span class="k">end</span>
+      <span class="n">freq_table</span> <span class="o">=</span> <span class="n">valid_selection</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span>
+        <span class="n">k</span><span class="o">[</span><span class="n">v</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">k</span>
+      <span class="k">end</span>
+      <span class="n">choice</span> <span class="o">=</span> <span class="n">valid_selection</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">max_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">freq_table</span><span class="o">[</span><span class="n">v</span><span class="o">]</span> <span class="p">}</span>
+      <span class="n">choice</span><span class="o">.</span><span class="n">to_s</span>
+    <span class="k">end</span>
+</pre></div>
+
+
+<p>As the move method is the entry point, it starts by storing the board in the class. I would have preferred to have this in the initialise method, but the rspec's provided also requested for this method to take on the board. It may have even overcomplicated the set up of the computer player, but it would have saved reassignment every move.</p>
+<p>The if statement short circuits the method to return the centre cell if "O" has not made a move. I can not see an algorithmic way to make sure that the central cell is chosen first on a second step without needlessly overcomplicating the program. As this is a simple enough rule, and it doesn't turn in to many if.. else statements, I am happy with this solution.</p>
+<p>The next part of this method takes the weighted selection, flattens it, and selects all of the empty cells. The weighted selection is discussed further on in detail. I build a frequency table from the weighted range of winning cells and return the highest frequency response. The frequency table makes sure that the free cell with the most combinations for wins is selected. The answer is then returned as a string to satisfy the test case for this method, and also to provide consistency with a human users response.</p>
+<div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">empty_cells</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="vi">@board</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">each_with_index</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span> <span class="p">}</span>
+      <span class="n">result</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">x_cells</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="vi">@board</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">each_with_index</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span> <span class="p">}</span>
+      <span class="n">result</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">o_cells</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="vi">@board</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">each_with_index</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;O&quot;</span> <span class="p">}</span>
+      <span class="n">result</span>
+    <span class="k">end</span>
+</pre></div>
+
+
+<p>The cells methods return an array of cell numbers occupied by their respective tokens, or lack thereof. It had occurred to me, and I had forgotten until now, that I could refactor the above into something such as the below:</p>
+<div class="highlight"><pre><span></span>  <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+      <span class="vi">@board</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;O&quot;</span> <span class="p">}</span><span class="o">.</span><span class="n">each_with_index</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
+    <span class="k">end</span>
+</pre></div>
+
+
+<p>It could still be worth splitting the above into two lines to break up the logic.</p>
+<p>The opponent_weightings method sorts through the wins and takes -3 for each cell occupied by "X". The current players token would need checking if an option were available for the Human to play as "O".</p>
+<div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">opponent_weightings</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="no">WIN_COMBINATIONS</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">win</span><span class="p">,</span> <span class="n">win_no</span><span class="o">|</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="n">win</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_cells</span> <span class="o">+</span> <span class="n">o_cells</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">remaining</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+          <span class="n">win</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span> <span class="n">result</span><span class="o">[</span><span class="n">win_no</span><span class="o">]</span> <span class="o">-=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">x_cells</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+      <span class="n">result</span>
+    <span class="k">end</span>
+</pre></div>
+
+
+<p>The weighted selection sorts through the opponent weightings and only returns those with the lowest score, assuming there is a spare cell.</p>
+<div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">weighted_selection</span>
+      <span class="n">lowest</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="n">selection</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="n">opponent_weightings</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">weight</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">weight</span> <span class="o">&lt;</span> <span class="n">lowest</span>
+          <span class="n">selection</span> <span class="o">=</span> <span class="o">[</span><span class="n">i</span><span class="o">]</span>
+          <span class="n">lowest</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="k">elsif</span> <span class="n">weight</span> <span class="o">==</span> <span class="n">lowest</span>
+          <span class="n">selection</span> <span class="o">&lt;&lt;</span> <span class="n">i</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+      <span class="n">selection</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">win</span><span class="o">|</span> <span class="no">WIN_COMBINATIONS</span><span class="o">[</span><span class="n">win</span><span class="o">]</span> <span class="p">}</span>
+    <span class="k">end</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

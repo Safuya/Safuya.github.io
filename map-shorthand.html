@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Map Shorthand</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/map-shorthand.html" rel="bookmark"
+           title="Permalink to Map Shorthand">Map Shorthand</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-20T17:41:00+00:00">
+                Published: Tue 20 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Something I found out about recently due to using Rubocop is a shorthand for a map.</p>
+<p>Take the contrived example of our cheesecake instances.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CheeseCake</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:flavour</span><span class="p">,</span> <span class="ss">:make</span>
+<span class="k">end</span>
+
+<span class="n">cheesecakes</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="n">strawberry_cheesecake</span> <span class="o">=</span> <span class="no">CheeseCake</span><span class="o">.</span><span class="n">new</span>
+<span class="n">strawberry_cheesecake</span><span class="o">.</span><span class="n">flavour</span> <span class="o">=</span> <span class="s1">&#39;strawberry&#39;</span>
+<span class="n">strawberry_cheesecake</span><span class="o">.</span><span class="n">make</span> <span class="o">=</span> <span class="s1">&#39;homemade&#39;</span>
+<span class="n">cheesecakes</span> <span class="o">&lt;&lt;</span> <span class="n">strawberry_cheesecake</span>
+
+<span class="n">raspberry_cheesecake</span> <span class="o">=</span> <span class="no">CheeseCake</span><span class="o">.</span><span class="n">new</span>
+<span class="n">raspberry_cheesecake</span><span class="o">.</span><span class="n">flavour</span> <span class="o">=</span> <span class="s1">&#39;raspberry&#39;</span>
+<span class="n">raspberry_cheesecake</span><span class="o">.</span><span class="n">make</span> <span class="o">=</span> <span class="s1">&#39;tesco&#39;</span>
+<span class="n">cheesecakes</span> <span class="o">&lt;&lt;</span> <span class="n">raspberry_cheesecake</span>
+
+<span class="n">lemon_cheesecake</span> <span class="o">=</span> <span class="no">CheeseCake</span><span class="o">.</span><span class="n">new</span>
+<span class="n">lemon_cheesecake</span><span class="o">.</span><span class="n">flavour</span> <span class="o">=</span> <span class="s1">&#39;lemon&#39;</span>
+<span class="n">lemon_cheesecake</span><span class="o">.</span><span class="n">make</span> <span class="o">=</span> <span class="s1">&#39;aldi&#39;</span>
+<span class="n">cheesecakes</span> <span class="o">&lt;&lt;</span> <span class="n">lemon_cheesecake</span>
+
+<span class="n">more_cheesecake</span> <span class="o">=</span> <span class="no">CheeseCake</span><span class="o">.</span><span class="n">new</span>
+<span class="n">more_cheesecake</span><span class="o">.</span><span class="n">flavour</span> <span class="o">=</span> <span class="s1">&#39;lemon&#39;</span>
+<span class="n">more_cheesecake</span><span class="o">.</span><span class="n">make</span> <span class="o">=</span> <span class="s1">&#39;homemade&#39;</span>
+<span class="n">cheesecakes</span> <span class="o">&lt;&lt;</span> <span class="n">more_cheesecake</span>
+</pre></div>
+
+
+<p>We want to look through the cheesecakes array of cheesecake instances to find out all the different cheesecake makes for our cheesecake extraordinaire ruby gem. I would usually have done the below, which would have got the answer fine.</p>
+<div class="highlight"><pre><span></span><span class="n">cheesecakes</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">cheesecake</span><span class="o">|</span> <span class="n">cheesecake</span><span class="o">.</span><span class="n">make</span> <span class="p">}</span><span class="o">.</span><span class="n">uniq</span>
+</pre></div>
+
+
+<p>But what if I told you there was a better way to do this common task? There is!</p>
+<div class="highlight"><pre><span></span><span class="n">cheesecakes</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:make</span><span class="p">)</span><span class="o">.</span><span class="n">uniq</span>
+</pre></div>
+
+
+<p>So now, when you're iterating over an array of instances to get an individual attribute, try the above.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

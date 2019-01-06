@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Dealing with Asynchronous Code</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/dealing-with-asynchronous-code.html" rel="bookmark"
+           title="Permalink to Dealing with Asynchronous Code">Dealing with Asynchronous Code</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-07-02T20:14:00+01:00">
+                Published: Mon 02 July 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Synchronous code is straightforward for me to understand. When you write everything, you write it in order. I know that execution always happens in the same order. When it comes to Javascript, however, code starts becoming asynchronous, meaning that it will not usually run in the same order.</p>
+<p>Requests to an API can be put into the background while waiting for a response and be dealt with later. If you put something in the oven to cook, you don't usually stand in front of it waiting for whatever your food to be ready. You will go and carry out some other tasks and come back once it is ready. Javascript makes calls asynchronous by default for a lot of different actions. If you're writing to a file or making a call to a website, you will come across this.</p>
+<p>The async and await functions make it easier to create asynchronous code that wouldn't usually be asynchronous, while also having functions run in a set order if they need to be. Take the below code as an example:</p>
+<div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">resolveAfter2Seconds</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;You have arrived.&#39;</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">async</span> <span class="kd">function</span> <span class="nx">asyncCall</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;calling&#39;</span><span class="p">);</span>
+  <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">resolveAfter2Seconds</span><span class="p">();</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Welcome to your destination&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">asyncCall</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Are we there yet?&#39;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>The output of this if run becomes:</p>
+<div class="highlight"><pre><span></span>&gt; &quot;calling&quot;
+&gt; &quot;Are we there yet?&quot;
+&gt; &quot;You have arrived.&quot;
+&gt; &quot;Welcome to your destination&quot;
+</pre></div>
+
+
+<p>So everything within the async function will run in order, but everything outside of the async call will run as soon as there's available time on the stack to execute.</p>
+<p>jQuery allows a similar syntax for its get function, providing method chaining for success, failure and a default that always runs.</p>
+<div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">jqxhr</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span> <span class="s2">&quot;example.php&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">alert</span><span class="p">(</span> <span class="s2">&quot;success&quot;</span> <span class="p">);</span>
+<span class="p">})</span>
+  <span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span> <span class="s2">&quot;second success&quot;</span> <span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span> <span class="s2">&quot;error&quot;</span> <span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">always</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span> <span class="s2">&quot;finished&quot;</span> <span class="p">);</span>
+  <span class="p">});</span>
+</pre></div>
+
+
+<p>For more extended and more nested results, I think this provides a much cleaner syntax than doing everything in the initial callback.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

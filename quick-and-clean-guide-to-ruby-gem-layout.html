@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Quick and Clean Guide to Ruby Gem Layout</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
+           title="Permalink to Quick and Clean Guide to Ruby Gem Layout">Quick and Clean Guide to Ruby Gem Layout</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-17T11:30:00+00:00">
+                Published: Sat 17 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+
+</footer><!-- /.post-info -->      <p>This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that <a href="http://bundler.io/v1.16/guides/creating_gem.html">bundle recommends</a>. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).</p>
+<p>So, how do you get started quickly? Using my gem named groupreads as an example, I will show you.</p>
+<div class="highlight"><pre><span></span>gem update bundle
+bundle gem groupreads
+</pre></div>
+
+
+<p>Where do you start coding? Create your class file inside lib/groupreads/readers.rb.</p>
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="nn">Groupreads</span>
+  <span class="k">class</span> <span class="nc">Readers</span>
+      <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+
+        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+          <span class="nb">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span>
+        <span class="k">end</span>
+
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Add your new file as a requirement in lib/groupreads.rb</p>
+<div class="highlight"><pre><span></span><span class="nb">require</span> <span class="s1">&#39;groupreads/version&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;groupreads/readers&#39;</span>
+
+<span class="k">module</span> <span class="nn">Groupreads</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>I'm still not sure if I'm organising my rspec files in the right way, so more will follow.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
