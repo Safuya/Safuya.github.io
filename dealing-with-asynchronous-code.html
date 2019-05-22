@@ -3,21 +3,23 @@
 <head>
         <meta charset="utf-8" />
         <title>Dealing with Asynchronous Code</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://safuya.net/theme/css/main.css" />
+        <link href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Rob's Blog Atom Feed" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Rob's Blog </a></h1>
+                <h1><a href="https://safuya.net/">Rob's Blog </a></h1>
                 <nav><ul>
-                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                    <li class="active"><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
+                    <li><a href="https://safuya.net/category/general.html">General</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="/dealing-with-asynchronous-code.html" rel="bookmark"
+        <a href="https://safuya.net/dealing-with-asynchronous-code.html" rel="bookmark"
            title="Permalink to Dealing with Asynchronous Code">Dealing with Asynchronous Code</a></h1>
     </header>
 
@@ -28,9 +30,9 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->      <p>Synchronous code is straightforward for me to understand. When you write everything, you write it in order. I know that execution always happens in the same order. When it comes to Javascript, however, code starts becoming asynchronous, meaning that it will not usually run in the same order.</p>
 <p>Requests to an API can be put into the background while waiting for a response and be dealt with later. If you put something in the oven to cook, you don't usually stand in front of it waiting for whatever your food to be ready. You will go and carry out some other tasks and come back once it is ready. Javascript makes calls asynchronous by default for a lot of different actions. If you're writing to a file or making a call to a website, you will come across this.</p>
@@ -97,6 +99,7 @@
                 <div class="social">
                         <h2>social</h2>
                         <ul>
+                            <li><a href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/safuya/">GitHub</a></li>
                             <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>

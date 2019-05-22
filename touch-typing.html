@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Quick and Clean Guide to Ruby Gem Layout</title>
+        <title>Touch Typing</title>
         <link rel="stylesheet" href="https://safuya.net/theme/css/main.css" />
         <link href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Rob's Blog Atom Feed" />
 </head>
@@ -11,60 +11,51 @@
         <header id="banner" class="body">
                 <h1><a href="https://safuya.net/">Rob's Blog </a></h1>
                 <nav><ul>
-                    <li class="active"><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
-                    <li><a href="https://safuya.net/category/general.html">General</a></li>
+                    <li><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
+                    <li class="active"><a href="https://safuya.net/category/general.html">General</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="https://safuya.net/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
-           title="Permalink to Quick and Clean Guide to Ruby Gem Layout">Quick and Clean Guide to Ruby Gem Layout</a></h1>
+        <a href="https://safuya.net/touch-typing.html" rel="bookmark"
+           title="Permalink to Touch Typing">Touch Typing</a></h1>
     </header>
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2018-02-17T11:30:00+00:00">
-                Published: Sat 17 February 2018
+        <abbr class="published" title="2019-05-22T18:49:00+01:00">
+                Published: Wed 22 May 2019
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="https://safuya.net/category/general.html">General</a>.</p>
 
-</footer><!-- /.post-info -->      <p>This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that <a href="http://bundler.io/v1.16/guides/creating_gem.html">bundle recommends</a>. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).</p>
-<p>So, how do you get started quickly? Using my gem named groupreads as an example, I will show you.</p>
-<div class="highlight"><pre><span></span>gem update bundle
-bundle gem groupreads
-</pre></div>
-
-
-<p>Where do you start coding? Create your class file inside lib/groupreads/readers.rb.</p>
-<div class="highlight"><pre><span></span><span class="k">module</span> <span class="nn">Groupreads</span>
-  <span class="k">class</span> <span class="nc">Readers</span>
-      <span class="kp">attr_accessor</span> <span class="ss">:name</span>
-
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-          <span class="nb">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span>
-        <span class="k">end</span>
-
-    <span class="k">end</span>
-<span class="k">end</span>
-</pre></div>
-
-
-<p>Add your new file as a requirement in lib/groupreads.rb</p>
-<div class="highlight"><pre><span></span><span class="nb">require</span> <span class="s1">&#39;groupreads/version&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;groupreads/readers&#39;</span>
-
-<span class="k">module</span> <span class="nn">Groupreads</span>
-<span class="k">end</span>
-</pre></div>
-
-
-<p>I'm still not sure if I'm organising my rspec files in the right way, so more will follow.</p>
+</footer><!-- /.post-info -->      <p>I haven't been very active on my blog recently, so I thought I should try to
+get back into it with any topic. Lately, I've been trying to work on my touch
+typing. After many years of following my own method for typing, I figured it
+would be nice to do it properly, break those years of bad habits and build up
+to a better typing speed than the plateau I'd reached.</p>
+<p>I started working on my touch typing on 12th May, and I've been making sure to
+practice for 15 minutes per day. I've managed to complete my goal so far, and
+my typing has become more accurate. I also think I've reached and surpassed my
+typing speed before this. It is hard to tell because I've only been measuring
+my speed with the touch typing methods since starting, so I don't know what my
+typing speed was before this switch. I'm now averaging 45 to 55 words per
+minute on standard words. I still need practice on symbols, although I am
+ahead of my training tools expectations here due to the programming and shell
+practice throughout the day.</p>
+<p>One of the biggest problems I had initially was remembering the pattern for
+passwords. I had a period near the end of last week where I couldn't type with
+my old habit to enter my passwords, but I had to type very deliberately with
+touch typing to get them right. I have now gotten them to a reasonable speed,
+and with the amount I get to practice them, I'm sure I'll surpass the old
+speed soon.</p>
+<p>I think it has been helpful to me, and I would recommend programmers spend
+time on improving their typing habits.</p>
     </div><!-- /.entry-content -->
 
   </article>

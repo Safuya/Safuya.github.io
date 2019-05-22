@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Rob's Blog - Flatiron</title><link href="https://safuya.net/" rel="alternate"></link><link href="https://safuya.net/feeds/flatiron.atom.xml" rel="self"></link><id>https://safuya.net/</id><updated>2018-07-02T20:14:00+01:00</updated><entry><title>Dealing with Asynchronous Code</title><link href="https://safuya.net/dealing-with-asynchronous-code.html" rel="alternate"></link><published>2018-07-02T20:14:00+01:00</published><updated>2018-07-02T20:14:00+01:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-07-02:/dealing-with-asynchronous-code.html</id><summary type="html">&lt;p&gt;Synchronous code is straightforward for me to understand. When you write everything, you write it in order. I know that execution always happens in the same order. When it comes to Javascript, however, code starts becoming asynchronous, meaning that it will not usually run in the same order.&lt;/p&gt;
+&lt;p&gt;Requests to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Synchronous code is straightforward for me to understand. When you write everything, you write it in order. I know that execution always happens in the same order. When it comes to Javascript, however, code starts becoming asynchronous, meaning that it will not usually run in the same order.&lt;/p&gt;
+&lt;p&gt;Requests to an API can be put into the background while waiting for a response and be dealt with later. If you put something in the oven to cook, you don't usually stand in front of it waiting for whatever your food to be ready. You will go and carry out some other tasks and come back once it is ready. Javascript makes calls asynchronous by default for a lot of different actions. If you're writing to a file or making a call to a website, you will come across this.&lt;/p&gt;
+&lt;p&gt;The async and await functions make it easier to create asynchronous code that wouldn't usually be asynchronous, while also having functions run in a set order if they need to be. Take the below code as an example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;resolveAfter2Seconds&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nb"&gt;Promise&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;resolve&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;setTimeout&lt;/span&gt;&lt;span class="p"&gt;(()&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="nx"&gt;resolve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;You have arrived.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nx"&gt;async&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;asyncCall&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;calling&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;await&lt;/span&gt; &lt;span class="nx"&gt;resolveAfter2Seconds&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Welcome to your destination&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nx"&gt;asyncCall&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Are we there yet?&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The output of this if run becomes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; &amp;quot;calling&amp;quot;
+&amp;gt; &amp;quot;Are we there yet?&amp;quot;
+&amp;gt; &amp;quot;You have arrived.&amp;quot;
+&amp;gt; &amp;quot;Welcome to your destination&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So everything within the async function will run in order, but everything outside of the async call will run as soon as there's available time on the stack to execute.&lt;/p&gt;
+&lt;p&gt;jQuery allows a similar syntax for its get function, providing method chaining for success, failure and a default that always runs.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;jqxhr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;example.php&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;alert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;success&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;})&lt;/span&gt;
+  &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;done&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;alert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;second success&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;})&lt;/span&gt;
+  &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;fail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;alert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;error&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;})&lt;/span&gt;
+  &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;always&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;alert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;finished&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For more extended and more nested results, I think this provides a much cleaner syntax than doing everything in the initial callback.&lt;/p&gt;</content></entry><entry><title>Certificate Manager</title><link href="https://safuya.net/certificate-manager.html" rel="alternate"></link><published>2018-05-27T15:33:00+01:00</published><updated>2018-05-27T15:33:00+01:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-05-27:/certificate-manager.html</id><summary type="html">&lt;p&gt;For my project, I made a website to manage SSL certificates. In my current job, finding out which expiring certificates are hosted on which load balancers is one of the main problems I have. The repository for this project can be found &lt;a href="https://github.com/safuya/certificate-manager"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To do this, I first came up …&lt;/p&gt;</summary><content type="html">&lt;p&gt;For my project, I made a website to manage SSL certificates. In my current job, finding out which expiring certificates are hosted on which load balancers is one of the main problems I have. The repository for this project can be found &lt;a href="https://github.com/safuya/certificate-manager"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To do this, I first came up with a sketch for the sign in and certificates page on Balsamiq. You can see the first of these for sign in below.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Certificate Manager Enter" src="https://s3-eu-west-1.amazonaws.com/nemene-share/certificate-manager/enter.png"&gt;&lt;/p&gt;
+&lt;p&gt;The second of these was for the certificates page.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Certificates Index" src="https://s3-eu-west-1.amazonaws.com/nemene-share/certificate-manager/certificates.png"&gt;&lt;/p&gt;
+&lt;p&gt;From these pages, I then wrote up the feature test for the login page. From here, I then I ran this test, wrote the appropriate controller test to move this feature test forward.&lt;/p&gt;
+&lt;p&gt;At this point, I needed to start creating the model. Before doing this, I created an entity relationship diagram that you can see below.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Entity Relationship Diagram" src="https://s3-eu-west-1.amazonaws.com/nemene-share/certificate-manager/certificate-manager.png"&gt;&lt;/p&gt;
+&lt;p&gt;I followed the ERD with writing model tests and writing migrations to get the controller test passing. Once the functional test passed, I then worked on the styling for the completed pages.&lt;/p&gt;
+&lt;p&gt;I learnt this methodology from &lt;a href="https://www.obeythetestinggoat.com"&gt;Obey The Testing Goat&lt;/a&gt;. You can see an overview of this method in the below diagram.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="TDD with Feature and Unit Tests" src="http://www.obeythetestinggoat.com/book/images/twp2_0404.png"&gt;&lt;/p&gt;
+&lt;p&gt;Depending on the tests, they sometimes require controller tests in between the feature tests and unit (model) tests. One problem that I ran into using functional/feature tests while testing variations in my device manager project is that I ended up having prolonged running tests. They took over 30 seconds to run, which gave a slow feedback loop. I got around this at the time to a certain extent by only running the tests that I was working on at the time. This time, I ended up using feature tests for the happy path, and then I used controller tests for testing different invalid inputs. These controller tests helped speed up my test runs to under 3 seconds, with a maximum of 6 seconds for the tests to load. The disadvantage of this approach was less robust testing of unhappy paths.&lt;/p&gt;
+&lt;p&gt;Near the end, I went through the different requirements, and I noticed a few different missing pieces. This specification check is where I added the comments section and the new and show nested resources for load balancer certificates.&lt;/p&gt;
+&lt;p&gt;For a project such as this, where meeting the requirements of demonstrating what I had learnt was the primary objective, it may have been better to set up a board on Trello with the requirements beforehand and work through the different needs. A requirements-driven development like this, however, would have clashed with my secondary condition that this project is useful for me at work. The main advantage of a design-driven development is a focus on the user experience. Perhaps starting with the Trello board, and putting the sketches onto the Trello board would be an improvement.&lt;/p&gt;</content></entry><entry><title>The Root of Absolutely Relatively Awesome Links</title><link href="https://safuya.net/the-root-of-absolutely-relatively-awesome-links.html" rel="alternate"></link><published>2018-05-13T03:58:00+01:00</published><updated>2018-05-13T03:58:00+01:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-05-13:/the-root-of-absolutely-relatively-awesome-links.html</id><summary type="html">&lt;p&gt;There have been some questions in the Slack in the past on broken links. This post is going to try to give a succinct explanation of different link types, and how they relate to each other for your Sinatra project and going forward with none magic frameworks such as Rails …&lt;/p&gt;</summary><content type="html">&lt;p&gt;There have been some questions in the Slack in the past on broken links. This post is going to try to give a succinct explanation of different link types, and how they relate to each other for your Sinatra project and going forward with none magic frameworks such as Rails. There are three different main types of links:
+&lt;em&gt; Absolute
+&lt;/em&gt; Root
+* Relative&lt;/p&gt;
+&lt;p&gt;So now, hopefully, this blog posts title makes sense.&lt;/p&gt;
+&lt;h2&gt;Absolute&lt;/h2&gt;
+&lt;p&gt;Absolute links are the easiest to understand. You give the entire link. The below shows this in a pretty diagram.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Absolute Links" src="https://s3-eu-west-1.amazonaws.com/nemene-share/absolute-path.png"&gt;&lt;/p&gt;
+&lt;p&gt;If you give the full link, you can be sure that in your specific circumstances, it's going to work right now. The problem is, as soon as you host it, the link may break. For example, http://localhost:3000/posts/23 is not the same as https://safuya.info/posts/23. Because of this, you should only use absolute links for links external to your site. A typical example of this is for externally hosted CSS frameworks.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;rel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://www.awesomestyles.com/style.css&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Root&lt;/h2&gt;
+&lt;p&gt;Root links are links that work from the main folder in your project. To use this, you need to put a / on the front of your link.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/posts/23&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Click Bait!&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Assuming you're hosting this on https://www.safuya.info, you would then link to https://www.safuya.info/posts/23. These links are not too confusing, as they won't change the location as you move around the site.
+A caveat with Sinatra and Rails though is that the root directory includes directories that you may not expect.&lt;/p&gt;
+&lt;h3&gt;Sinatra Root&lt;/h3&gt;
+&lt;p&gt;Sinatra adds a default location to your root directory. The /public folder, which you would expect to be /public/amazing-image.png is accessible via /amazing-image.png. You can change the default for this if you would like in /app/controllers/application_controller.rb. The below example shows a typical application controller. set :public_folder, 'public' is setting the public folder to be in the root directory, and to allow routing to it. You can then place static files in there, such as CSS, javascript and images.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Sinatra&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+  &lt;span class="n"&gt;configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;set&lt;/span&gt; &lt;span class="ss"&gt;:public_folder&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;public&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;set&lt;/span&gt; &lt;span class="ss"&gt;:views&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;app/views&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;enable&lt;/span&gt; &lt;span class="ss"&gt;:sessions&lt;/span&gt;
+    &lt;span class="n"&gt;set&lt;/span&gt; &lt;span class="ss"&gt;:session_secret&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;ENV&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;session_secret&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;helpers&lt;/span&gt; &lt;span class="no"&gt;Flash&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;Authorization&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Rails Root&lt;/h3&gt;
+&lt;p&gt;In Rails, it's a bit more complicated. The main place to add your static files, such as CSS, javascript and images is the asset pipeline, located in /app/assets. There will be images, javascripts and stylesheets by default. If you want to add additional folders, such as fonts, you can do it in /config/initializers/assets.rb.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;application&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assets&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;app&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;assets&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;fonts&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Rails will then put everything in the assets into a folder. When you use the below, which rails generates automatically for you:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="n"&gt;stylesheet_link_tag&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;application&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;media&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;all&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;data-turbolinks-track&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reload&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It will give these assets a random identifier such as the below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;rel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;media&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;all&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/assets/application.self-0b34aa4a80f4198fbe85c7f3af8b8f79cee409ca96c3de76dd28dc08a75b0f73.css?body=1&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;data-turbolinks-track&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;reload&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are a few reasons Rails does this, but that's for another blog post.&lt;/p&gt;
+&lt;h2&gt;Relative Links&lt;/h2&gt;
+&lt;p&gt;Relative links can be useful, but they are where people end up getting confused, especially with the above changes in Sinatra and Rails folder layouts with obfuscated configuration files. Relative links work based on your current location. If we have the below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;22&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Last&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;24&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Next&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you are hosting this from https://www.safuya.info/posts/23 it will link to https://www.safuya.info/posts/22 and https://www.safuya.info/posts/24. In this situation, this works pretty well. You don't need to type in the full path. It keeps your code shorter, and it's descriptive with the text.
+The problem comes if you're using relative links for CSS in your main template. You're working on a Sinatra project, and you are working on your root page. You link to your stylesheet link so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;style.css&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In your root page, this correctly links to your style.css with the magic of relative links.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://localhost:9393/style.css&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You then continue and build out a model, controller and view for posts. Your link then stops working. Why? Because it's now doing the below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://localhost:9393/posts/style.css&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You haven't got your style.css in your posts folder so that it won't load your styles.
+To fix this, change to using a root link.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/style.css&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It will then always render correctly.&lt;/p&gt;</content></entry><entry><title>Device Manager</title><link href="https://safuya.net/device-manager.html" rel="alternate"></link><published>2018-04-05T07:25:00+01:00</published><updated>2018-04-05T07:25:00+01:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-04-05:/device-manager.html</id><summary type="html">&lt;p&gt;For my Sinatra project, I am making a device manager website. This is for managing consumer routers and set top boxes in our test environment. The website meets the below requirements:
+&lt;em&gt; Be an MVC website.
+&lt;/em&gt; Use ActiveRecord with Sinatra.
+&lt;em&gt; Have a devices, groups and users table.
+&lt;/em&gt; Devices belong to a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;For my Sinatra project, I am making a device manager website. This is for managing consumer routers and set top boxes in our test environment. The website meets the below requirements:
+&lt;em&gt; Be an MVC website.
+&lt;/em&gt; Use ActiveRecord with Sinatra.
+&lt;em&gt; Have a devices, groups and users table.
+&lt;/em&gt; Devices belong to a group. A device must have a serial number and model. It may also have a firmware version, last contact and last activation.
+&lt;em&gt; Groups can have many devices and many users. A group must have a name and a type.
+&lt;/em&gt; Users can have many groups. A user must have a username, name, email and password. They may also have a group, and they may not do anything until they have a group.
+&lt;em&gt; Only admins can add devices.
+&lt;/em&gt; Admins must approve new user signups before they can do anything.
+&lt;em&gt; Users may view devices if the device belongs to their group and their group is of type read.
+&lt;/em&gt; Users may delete devices and edit the firmware version, last contact and last activation of the devices that belong to their group if their group is of type write. They also have all permissions granted through read.
+&lt;em&gt; Admins may view, delete, edit and add new devices. All devices will be a member of the admin group.
+&lt;/em&gt; User emails and usernames must be unique and not blank.
+&lt;em&gt; Passwords must be 8 characters or longer, must contain 3 of 4 of either lowercase, uppercase, symbols and numbers.
+&lt;/em&gt; Group names must be unique.
+* Device serial numbers must be unique.&lt;/p&gt;
+&lt;p&gt;The database and model for my project has four main tables that can most easily be seen in the diagram below.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="entity relationship diagram" src="https://s3-eu-west-1.amazonaws.com/nemene-share/device-manager-erd.png"&gt;&lt;/p&gt;
+&lt;p&gt;The project was developed using test driven development. The first part of the application that was developed was the database and the model. This provided a basis for the rest of the website. The tests for this section were provided in spec/models and used rspec. Once the model was completed, functional tests were written for individual sections, followed by implementation of the features to pass these tests. These were written in rspec and capybara. The final piece of testing that was carried out was manual testing of the website. Layout and the small pieces of javascript functionality were tested using this method.&lt;/p&gt;</content></entry><entry><title>Map Shorthand</title><link href="https://safuya.net/map-shorthand.html" rel="alternate"></link><published>2018-03-20T17:41:00+00:00</published><updated>2018-03-20T17:41:00+00:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-03-20:/map-shorthand.html</id><summary type="html">&lt;p&gt;Something I found out about recently due to using Rubocop is a shorthand for a map.&lt;/p&gt;
+&lt;p&gt;Take the contrived example of our cheesecake instances.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CheeseCake&lt;/span&gt;
+  &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:flavour&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:make&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+&lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CheeseCake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flavour&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;strawberry&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;homemade&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt;
+
+&lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CheeseCake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flavour&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;raspberry&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Something I found out about recently due to using Rubocop is a shorthand for a map.&lt;/p&gt;
+&lt;p&gt;Take the contrived example of our cheesecake instances.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CheeseCake&lt;/span&gt;
+  &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:flavour&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:make&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+&lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CheeseCake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flavour&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;strawberry&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;homemade&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;strawberry_cheesecake&lt;/span&gt;
+
+&lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CheeseCake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flavour&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;raspberry&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;tesco&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;raspberry_cheesecake&lt;/span&gt;
+
+&lt;span class="n"&gt;lemon_cheesecake&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CheeseCake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;span class="n"&gt;lemon_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flavour&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;lemon&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;lemon_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;aldi&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;lemon_cheesecake&lt;/span&gt;
+
+&lt;span class="n"&gt;more_cheesecake&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;CheeseCake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;span class="n"&gt;more_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flavour&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;lemon&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;more_cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;homemade&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;cheesecakes&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;more_cheesecake&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We want to look through the cheesecakes array of cheesecake instances to find out all the different cheesecake makes for our cheesecake extraordinaire ruby gem. I would usually have done the below, which would have got the answer fine.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;cheesecakes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cheesecake&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cheesecake&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uniq&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But what if I told you there was a better way to do this common task? There is!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;cheesecakes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="ss"&gt;:make&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uniq&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So now, when you're iterating over an array of instances to get an individual attribute, try the above.&lt;/p&gt;</content></entry><entry><title>Getting started on your CLI Gem</title><link href="https://safuya.net/getting-started-on-your-cli-gem.html" rel="alternate"></link><published>2018-03-11T05:44:00+00:00</published><updated>2018-03-11T05:44:00+00:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-03-11:/getting-started-on-your-cli-gem.html</id><summary type="html">&lt;p&gt;This is a step by step tutorial on getting started with your CLI gem, and how to do that using test-driven development.&lt;/p&gt;
+&lt;h2&gt;How?&lt;/h2&gt;
+&lt;p&gt;The concept of test driven development is straightforward. You write out tests before you start writing your code. You then write code to get your tests passing …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is a step by step tutorial on getting started with your CLI gem, and how to do that using test-driven development.&lt;/p&gt;
+&lt;h2&gt;How?&lt;/h2&gt;
+&lt;p&gt;The concept of test driven development is straightforward. You write out tests before you start writing your code. You then write code to get your tests passing. Let's start building out our gem. I want to make a gem that shows my books compared to my book clubs books and adds them for me. Let's start by creating a structure for the gem using bundler.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;// ♥ bundle gem groupreads
+Creating gem &lt;span class="s1"&gt;&amp;#39;groupreads&amp;#39;&lt;/span&gt;...
+MIT License enabled in config
+Code of conduct enabled in config
+      create  groupreads/Gemfile
+      create  groupreads/lib/groupreads.rb
+      create  groupreads/lib/groupreads/version.rb
+      create  groupreads/groupreads.gemspec
+      create  groupreads/Rakefile
+      create  groupreads/README.md
+      create  groupreads/bin/console
+      create  groupreads/bin/setup
+      create  groupreads/.gitignore
+      create  groupreads/.travis.yml
+      create  groupreads/.rspec
+      create  groupreads/spec/spec_helper.rb
+      create  groupreads/spec/groupreads_spec.rb
+      create  groupreads/LICENSE.txt
+      create  groupreads/CODE_OF_CONDUCT.md
+Initializing git repo in /Users/roberthughes/src/sandbox/groupreads
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;07&lt;/span&gt;:47:36&lt;span class="o"&gt;]&lt;/span&gt; sandbox
+// ♥  &lt;span class="nb"&gt;cd&lt;/span&gt; groupreads
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Great. Oh, there's already a spec file. Let's try running our tests.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;07&lt;/span&gt;:50:57&lt;span class="o"&gt;]&lt;/span&gt; groupreads
+// ♥ rspec
+/Users/roberthughes/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0/bundler/rubygems_integration.rb:65:in &lt;span class="sb"&gt;`&lt;/span&gt;rescue in validate&lt;span class="s1"&gt;&amp;#39;: The gemspec at /Users/roberthughes/src/sandbox/groupreads/groupreads.gemspec is not valid. Please fix this gemspec. (Gem::InvalidSpecificationException)&lt;/span&gt;
+&lt;span class="s1"&gt;The validation error was &amp;#39;&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;FIXME&amp;quot;&lt;/span&gt; or &lt;span class="s2"&gt;&amp;quot;TODO&amp;quot;&lt;/span&gt; is not a description&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So, I need to edit the gemspec. It looks like it's on line 12 and 13.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  &lt;span class="n"&gt;spec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;summary&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sx"&gt;%q{Compare your books to your group books.}&lt;/span&gt;
+  &lt;span class="n"&gt;spec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;description&lt;/span&gt;   &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sx"&gt;%q{Compare your books to your book clubs books.}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's try that again.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;// ♥ bundle &lt;span class="nb"&gt;exec&lt;/span&gt; rspec
+
+Groupreads
+  has a version number
+  does something useful &lt;span class="o"&gt;(&lt;/span&gt;FAILED - &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+Failures:
+
+  &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; Groupreads does something useful
+     Failure/Error: expect&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;.to eq&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+       expected: &lt;span class="nb"&gt;true&lt;/span&gt;
+            got: &lt;span class="nb"&gt;false&lt;/span&gt;
+
+       &lt;span class="o"&gt;(&lt;/span&gt;compared &lt;span class="nv"&gt;using&lt;/span&gt; &lt;span class="o"&gt;==)&lt;/span&gt;
+     &lt;span class="c1"&gt;# ./spec/groupreads_spec.rb:7:in `block (2 levels) in &amp;lt;top (required)&amp;gt;&amp;#39;&lt;/span&gt;
+
+Finished in &lt;span class="m"&gt;0&lt;/span&gt;.0286 seconds &lt;span class="o"&gt;(&lt;/span&gt;files took &lt;span class="m"&gt;0&lt;/span&gt;.14683 seconds to load&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;2&lt;/span&gt; examples, &lt;span class="m"&gt;1&lt;/span&gt; failure
+
+Failed examples:
+
+rspec ./spec/groupreads_spec.rb:6 &lt;span class="c1"&gt;# Groupreads does something useful&lt;/span&gt;
+
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;08&lt;/span&gt;:38:13&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;master&lt;span class="o"&gt;)&lt;/span&gt; groupreads
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Awesome! Let's follow their suggestion. So, what do we want to do next? Let's start by making a group, starting with our test of course.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="no"&gt;RSpec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt; &lt;span class="no"&gt;Group&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+
+  &lt;span class="n"&gt;describe&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;#name&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;can be read and written to&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;test_group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+      &lt;span class="n"&gt;test_group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;
+      &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test_group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;eql&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So, how do you decide what goes in this test? The answer is simple. If I was using this code, how would I want to use it? What would I want to run, and what do I expect back from this test?&lt;/p&gt;
+&lt;p&gt;Run the tests.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;// ♥ bundle &lt;span class="nb"&gt;exec&lt;/span&gt; rspec
+
+An error occurred &lt;span class="k"&gt;while&lt;/span&gt; loading ./spec/group_spec.rb.
+Failure/Error:
+  RSpec.describe Group &lt;span class="k"&gt;do&lt;/span&gt;
+
+    describe &lt;span class="s1"&gt;&amp;#39;#name&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      it &lt;span class="s1"&gt;&amp;#39;can be read and written to&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="nv"&gt;test_group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Group.new
+        test_group.name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;
+        expect&lt;span class="o"&gt;(&lt;/span&gt;test_group.name&lt;span class="o"&gt;)&lt;/span&gt;.to eql&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+      end
+    end
+
+
+NameError:
+  uninitialized constant Group
+&lt;span class="c1"&gt;# ./spec/group_spec.rb:1:in `&amp;lt;top (required)&amp;gt;&amp;#39;&lt;/span&gt;
+
+Finished in &lt;span class="m"&gt;0&lt;/span&gt;.00027 seconds &lt;span class="o"&gt;(&lt;/span&gt;files took &lt;span class="m"&gt;0&lt;/span&gt;.13815 seconds to load&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;0&lt;/span&gt; examples, &lt;span class="m"&gt;0&lt;/span&gt; failures, &lt;span class="m"&gt;1&lt;/span&gt; error occurred outside of examples
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Great. Now we're getting on to the sort of thing you'll be seeing in the Learn labs. Let's make lib/group.rb.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Group&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And try running our tests.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;// ♥ bundle &lt;span class="nb"&gt;exec&lt;/span&gt; rspec
+
+An error occurred &lt;span class="k"&gt;while&lt;/span&gt; loading ./spec/group_spec.rb.
+Failure/Error:
+  RSpec.describe Group &lt;span class="k"&gt;do&lt;/span&gt;
+
+    describe &lt;span class="s1"&gt;&amp;#39;#name&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      it &lt;span class="s1"&gt;&amp;#39;can be read and written to&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="nv"&gt;test_group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Group.new
+        test_group.name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;
+        expect&lt;span class="o"&gt;(&lt;/span&gt;test_group.name&lt;span class="o"&gt;)&lt;/span&gt;.to eql&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+      end
+    end
+
+
+NameError:
+  uninitialized constant Group
+&lt;span class="c1"&gt;# ./spec/group_spec.rb:1:in `&amp;lt;top (required)&amp;gt;&amp;#39;&lt;/span&gt;
+
+Finished in &lt;span class="m"&gt;0&lt;/span&gt;.00024 seconds &lt;span class="o"&gt;(&lt;/span&gt;files took &lt;span class="m"&gt;0&lt;/span&gt;.13006 seconds to load&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;0&lt;/span&gt; examples, &lt;span class="m"&gt;0&lt;/span&gt; failures, &lt;span class="m"&gt;1&lt;/span&gt; error occurred outside of examples
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Oops. It looks like I missed the requiring the file. Let's add "require" to the rspec.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;group&amp;#39;&lt;/span&gt;
+
+&lt;span class="no"&gt;RSpec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt; &lt;span class="no"&gt;Group&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And try again.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;// ♥ bundle &lt;span class="nb"&gt;exec&lt;/span&gt; rspec
+
+Group
+  &lt;span class="c1"&gt;#name&lt;/span&gt;
+    can be &lt;span class="nb"&gt;read&lt;/span&gt; and written to &lt;span class="o"&gt;(&lt;/span&gt;FAILED - &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+Groupreads
+  has a version number
+
+Failures:
+
+  &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; Group#name can be &lt;span class="nb"&gt;read&lt;/span&gt; and written to
+     Failure/Error: test_group.name &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sword and Laser&amp;quot;&lt;/span&gt;
+
+     NoMethodError:
+       undefined method &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39; for #&amp;lt;Group:0x007fa06aa859a0&amp;gt;&lt;/span&gt;
+&lt;span class="s1"&gt;     # ./spec/group_spec.rb:8:in `block (3 levels) in &amp;lt;top (required)&amp;gt;&amp;#39;&lt;/span&gt;
+
+Finished in &lt;span class="m"&gt;0&lt;/span&gt;.00566 seconds &lt;span class="o"&gt;(&lt;/span&gt;files took &lt;span class="m"&gt;0&lt;/span&gt;.36264 seconds to load&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;2&lt;/span&gt; examples, &lt;span class="m"&gt;1&lt;/span&gt; failure
+
+Failed examples:
+
+rspec ./spec/group_spec.rb:6 &lt;span class="c1"&gt;# Group#name can be read and written to&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That's better. Let's add the attribute accessor to lib/group.rb.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Group&lt;/span&gt;
+  &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;
+
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And test.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;// ♥ bundle &lt;span class="nb"&gt;exec&lt;/span&gt; rspec
+
+Group
+  &lt;span class="c1"&gt;#name&lt;/span&gt;
+    can be &lt;span class="nb"&gt;read&lt;/span&gt; and written to
+
+Groupreads
+  has a version number
+
+Finished in &lt;span class="m"&gt;0&lt;/span&gt;.00503 seconds &lt;span class="o"&gt;(&lt;/span&gt;files took &lt;span class="m"&gt;0&lt;/span&gt;.11312 seconds to load&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;2&lt;/span&gt; examples, &lt;span class="m"&gt;0&lt;/span&gt; failures
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Awesome. Time to add your next feature. What do you want your groups to do? How do you want to call that functionality? What output do you expect back?&lt;/p&gt;
+&lt;h2&gt;Why&lt;/h2&gt;
+&lt;p&gt;So why do you want to develop like this? Isn't it just slowing me down? I could have written the above example in half the time without the test.&lt;/p&gt;
+&lt;p&gt;Further down the road, you may want to edit the functionality. You have the documentation provided by the tests to remind you of what you thought your requirements were at the time. You can use this documentation along with the increased understanding you have of your app to update the requirements, edit what you currently have to make it meet your new needs, and check that all the features you've added in the meantime haven't broken, or fix them if they have.&lt;/p&gt;
+&lt;p&gt;It helps keep you focused on what you need. I've gone through writing features for an application, then I've gone back later and realised that I never ended up using the functionality that I created. With test driven development, it helps keep me focused on what needs developing, and why that feature requires developing.&lt;/p&gt;
+&lt;h2&gt;Summary and other resources&lt;/h2&gt;
+&lt;p&gt;A couple of excellent resources for test-driven development are:
+Effective Testing with RSpec 3 - Made by the current developers of RSpec. It goes into a lot of the extra features.
+&lt;a href="http://bundler.io/v1.16/guides/creating_gem.html"&gt;Bundler: How to create a Ruby gem&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Even if you don't use test-driven development now, keep it in mind, especially when you're at those painful moments where you feel completely lost in an error that seems to go all the way through your app. Test-driven development could save your sanity!&lt;/p&gt;</content></entry><entry><title>Groupreads</title><link href="https://safuya.net/groupreads.html" rel="alternate"></link><published>2018-02-20T12:19:00+00:00</published><updated>2018-02-20T12:19:00+00:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-02-20:/groupreads.html</id><summary type="html">&lt;p&gt;My CLI gem is called &lt;a href="https://www.github.com/safuya/groupreads"&gt;groupreads&lt;/a&gt;. It uses the Goodreads API. It gets the users list of groups, all of the currently read books in those groups and compares them against the users to read and read lists. It then outputs a list of books to add to their to-read …&lt;/p&gt;</summary><content type="html">&lt;p&gt;My CLI gem is called &lt;a href="https://www.github.com/safuya/groupreads"&gt;groupreads&lt;/a&gt;. It uses the Goodreads API. It gets the users list of groups, all of the currently read books in those groups and compares them against the users to read and read lists. It then outputs a list of books to add to their to-read list.&lt;/p&gt;
+&lt;h2&gt;Layout&lt;/h2&gt;
+&lt;p&gt;The project directories and files included are all based on Bundler's &lt;a href="http://bundler.io/v1.16/guides/creating_gem.html"&gt;gem creation guide&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;bin&lt;/h3&gt;
+&lt;p&gt;This directory includes the console file, for use in development. It allows calling all of the methods outside of the program itself. I did not use this file, instead always using the spec files along with binding.pry for debugging. The setup file is a bash script for running the install of all the required gems.&lt;/p&gt;
+&lt;h3&gt;exe&lt;/h3&gt;
+&lt;p&gt;groupreads is the file that loads the CLI from the lib folder.&lt;/p&gt;
+&lt;h3&gt;feature&lt;/h3&gt;
+&lt;p&gt;The feature directory contains support/setup.rb, which pulls in the Aruba requirement for the feature scenarios. The file groupreads.feature contains the tests for the different command line options.&lt;/p&gt;
+&lt;h3&gt;lib&lt;/h3&gt;
+&lt;p&gt;Lib contains the main code.&lt;/p&gt;
+&lt;p&gt;Groupreads pulls together everything into one module, allowing use through one require statement.&lt;/p&gt;
+&lt;p&gt;The group contains methods for the books that are currently being read by that group.&lt;/p&gt;
+&lt;p&gt;Reader involves the majority of the code. Firstly, reader allows viewing what is on a readers shelf by supplying the name of the shelf. It then contains methods based on this to feedback the read and to_read books for the user. A method is available for listing groups, along with a method for listing the currently reading books for all of those groups. Finally, there is also a new books method for listing out the new books, which is the primary purpose of this application.&lt;/p&gt;
+&lt;p&gt;The CLI class uses Thor to create the command line arguments for this gem.&lt;/p&gt;
+&lt;h3&gt;spec&lt;/h3&gt;
+&lt;p&gt;The spec directory contains all of the tests for this code. These specs contain all that will be useful going forward, to make sure that new features do not break old features, and that refactoring of the application allows it to carry on working. These tests were also fundamental in helping with the design of the application.&lt;/p&gt;
+&lt;h3&gt;base directory&lt;/h3&gt;
+&lt;p&gt;The base directory contains a .gitignore file, which does the usual ignoring of files for git. The .rspec file contains some options for rspec. .travis.yml contains options for pushing the code through a &lt;a href="https://travis-ci.org"&gt;Travis CI&lt;/a&gt; pipeline. There is a code of conduct document directly from &lt;a href="http://contributor-covenant.org"&gt;contributor covenant&lt;/a&gt;. The gem file points to the gem spec. The gem spec contains the project details, deals with pulling in all of the requirements and building out the development commands. The license chosen for this project was the MIT license. This license allows anyone to use, modify or sell my gem, as long as they don't blame me, and as long as they include this license in all copies or code that is made up of a substantial portion of this gem. The Rakefile contains a different way of running the specs. The readme contains details on the gem, how to use it and how to contribute to it.&lt;/p&gt;
+&lt;h2&gt;Development Method&lt;/h2&gt;
+&lt;p&gt;The gem was developed using test-driven development. Each test was written one at a time to provide the next piece of the puzzle that I required. I then ran the new test to make sure that it was failing. I then fixed the error messages provided by the test one by one until the test passed. I then refactored this test. Rspec was used to test the methods, Aruba and Cucumber were used to test the CLI. Pry was used to create breakpoints while solving issues. I created the develop branch while working on the code. When I completed development, I merged this branch back into master.&lt;/p&gt;
+&lt;h2&gt;Future improvements&lt;/h2&gt;
+&lt;p&gt;There are some future enhancements that I'd like to make to the gem. I have provided a list of these below.
+&lt;em&gt; Guide the user through setting up their environment with the setup file.
+&lt;/em&gt; Extend the CLI to include all of the different methods.
+&lt;em&gt; Provide a help command on the CLI.
+&lt;/em&gt; Improve the feature tests to check the output of the newbooks option.
+&lt;em&gt; Refactor the addition of the key-value pairs for the HTTP GETs into a method.
+&lt;/em&gt; Create docs.&lt;/p&gt;</content></entry><entry><title>Quick and Clean Guide to Ruby Gem Layout</title><link href="https://safuya.net/quick-and-clean-guide-to-ruby-gem-layout.html" rel="alternate"></link><published>2018-02-17T11:30:00+00:00</published><updated>2018-02-17T11:30:00+00:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-02-17:/quick-and-clean-guide-to-ruby-gem-layout.html</id><summary type="html">&lt;p&gt;This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that &lt;a href="http://bundler.io/v1.16/guides/creating_gem.html"&gt;bundle recommends&lt;/a&gt;. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).&lt;/p&gt;
+&lt;p&gt;So, how …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that &lt;a href="http://bundler.io/v1.16/guides/creating_gem.html"&gt;bundle recommends&lt;/a&gt;. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).&lt;/p&gt;
+&lt;p&gt;So, how do you get started quickly? Using my gem named groupreads as an example, I will show you.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;gem update bundle
+bundle gem groupreads
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Where do you start coding? Create your class file inside lib/groupreads/readers.rb.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Groupreads&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Readers&lt;/span&gt;
+      &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;
+
+        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Add your new file as a requirement in lib/groupreads.rb&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;groupreads/version&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;groupreads/readers&amp;#39;&lt;/span&gt;
+
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Groupreads&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I'm still not sure if I'm organising my rspec files in the right way, so more will follow.&lt;/p&gt;</content></entry><entry><title>Building An Unbeatable Tic Tac Toe AI</title><link href="https://safuya.net/building-an-unbeatable-tic-tac-toe-ai.html" rel="alternate"></link><published>2018-02-09T07:51:00+00:00</published><updated>2018-02-09T07:51:00+00:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-02-09:/building-an-unbeatable-tic-tac-toe-ai.html</id><summary type="html">&lt;p&gt;The first major challenge that I faced with the coding boot camp was building an unbeatable Tic-Tac-Toe AI. I have managed to create an algorithm to solve this problem, with only one move being hard coded.&lt;/p&gt;
+&lt;p&gt;The overarching logic of my program is this the move method, found below.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="k"&gt;def …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;The first major challenge that I faced with the coding boot camp was building an unbeatable Tic-Tac-Toe AI. I have managed to create an algorithm to solve this problem, with only one move being hard coded.&lt;/p&gt;
+&lt;p&gt;The overarching logic of my program is this the move method, found below.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;move&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;board&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="vi"&gt;@board&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;board&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;o_cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty?&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;empty_cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;include?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;5&amp;quot;&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="c1"&gt;# Only include empty cells on the array feeding in to the freq table&lt;/span&gt;
+      &lt;span class="n"&gt;valid_selection&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;weighted_selection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flatten&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;ws&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;empty_cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;include?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ws&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="n"&gt;freq_table&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;valid_selection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flatten&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;Hash&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="n"&gt;k&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="n"&gt;choice&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;valid_selection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flatten&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max_by&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;freq_table&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="n"&gt;choice&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_s&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As the move method is the entry point, it starts by storing the board in the class. I would have preferred to have this in the initialise method, but the rspec's provided also requested for this method to take on the board. It may have even overcomplicated the set up of the computer player, but it would have saved reassignment every move.&lt;/p&gt;
+&lt;p&gt;The if statement short circuits the method to return the centre cell if "O" has not made a move. I can not see an algorithmic way to make sure that the central cell is chosen first on a second step without needlessly overcomplicating the program. As this is a simple enough rule, and it doesn't turn in to many if.. else statements, I am happy with this solution.&lt;/p&gt;
+&lt;p&gt;The next part of this method takes the weighted selection, flattens it, and selects all of the empty cells. The weighted selection is discussed further on in detail. I build a frequency table from the weighted range of winning cells and return the highest frequency response. The frequency table makes sure that the free cell with the most combinations for wins is selected. The answer is then returned as a string to satisfy the test case for this method, and also to provide consistency with a human users response.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;empty_cells&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+      &lt;span class="vi"&gt;@board&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_with_index&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;x_cells&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+      &lt;span class="vi"&gt;@board&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_with_index&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;X&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;o_cells&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+      &lt;span class="vi"&gt;@board&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_with_index&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;O&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The cells methods return an array of cell numbers occupied by their respective tokens, or lack thereof. It had occurred to me, and I had forgotten until now, that I could refactor the above into something such as the below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cells&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="vi"&gt;@board&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;O&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_with_index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It could still be worth splitting the above into two lines to break up the logic.&lt;/p&gt;
+&lt;p&gt;The opponent_weightings method sorts through the wins and takes -3 for each cell occupied by "X". The current players token would need checking if an option were available for the Human to play as "O".&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;opponent_weightings&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;Array&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="no"&gt;WIN_COMBINATIONS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_with_index&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;win&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;win_no&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="n"&gt;remaining&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;win&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_cells&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;o_cells&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+          &lt;span class="n"&gt;win&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;win_no&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;x_cells&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;include?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="n"&gt;result&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The weighted selection sorts through the opponent weightings and only returns those with the lowest score, assuming there is a spare cell.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;weighted_selection&lt;/span&gt;
+      &lt;span class="n"&gt;lowest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+      &lt;span class="n"&gt;selection&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+      &lt;span class="n"&gt;opponent_weightings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_with_index&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;lowest&lt;/span&gt;
+          &lt;span class="n"&gt;selection&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+          &lt;span class="n"&gt;lowest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt;
+        &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;lowest&lt;/span&gt;
+          &lt;span class="n"&gt;selection&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="n"&gt;selection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;win&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;WIN_COMBINATIONS&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;win&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Why I Decided to Learn Programming</title><link href="https://safuya.net/why-i-decided-to-learn-programming.html" rel="alternate"></link><published>2018-01-24T09:05:00+00:00</published><updated>2018-01-24T09:05:00+00:00</updated><author><name>Robert Hughes</name></author><id>tag:safuya.net,2018-01-24:/why-i-decided-to-learn-programming.html</id><summary type="html">&lt;p&gt;To set the scene, I'm not entirely new to programming. I have been a hobbyist programmer since high school. I first started after going to a holiday camp, learning some basic. I have no memory of the language itself, but I made a game where you had to navigate through …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To set the scene, I'm not entirely new to programming. I have been a hobbyist programmer since high school. I first started after going to a holiday camp, learning some basic. I have no memory of the language itself, but I made a game where you had to navigate through a maze.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="BASIC MAZE" src="http://atariage.com/forums/uploads/monthly_05_2007/post-9475-1179987286.png"&gt;&lt;/p&gt;
+&lt;p&gt;After going back to school, I taught myself HTML. When I got to the point of trying to make interactive websites, I got stuck. The choices back in 1999 were PHP, along with Apache and MySQL or the Microsoft framework based on IIS. Needless to say as a 12-year old, I struggled for a couple of weeks with trying to set up PHP, but I could never manage to work out how to get everything installed.&lt;/p&gt;
+&lt;p&gt;After this, I ended up dropping website development for a long time. I carried on dabbling with programming languages, but I never did anything past the basic tutorials as I never applied them to problems.&lt;/p&gt;
+&lt;p&gt;When I started my job with my current company, however, I began to use the programming I had learnt to start scripting some of my work, which was checking alarms for network incidents. With this renewed purpose, I started pushing myself to be able to implement new things. Move on three years, and I've got interested in website development again after looking to make graphical interfaces for the scripts I'd been making. The bug struck again, and I started to study website development more seriously. So, what is it about website development that I love?&lt;/p&gt;
+&lt;h2&gt;Making Beautiful Things&lt;/h2&gt;
+&lt;p&gt;I'm typically not concerned with the look of things, but as soon as those things are on the computer, I suddenly want to pay a lot of attention to the details. My thoughts are continually drifting to what is perfection?
+&lt;em&gt; Is this file structure right? It's starting to get too many files in this directory.
+&lt;/em&gt; It works but it's ugly. How do I change this to make it more readable?
+* It's not quite right.. How about a little further to the right? But oh, starting at this screen size, it needs to go there.&lt;/p&gt;
+&lt;p&gt;Getting the CSS right for a page can be time sync, let me tell you. And don't get me started on any incorrectly indented code. I don't think I'm capable of reading code that's not indented correctly. I do need to rein myself in sometimes to make sure I can get things done.&lt;/p&gt;
+&lt;h2&gt;Solving Problems&lt;/h2&gt;
+&lt;p&gt;I also enjoy solving problems. There's nothing quite so relaxing to me as running a test suite, reading the error message, coding the fix for that and moving on to the next error. There is also the feeling following looking through different resources and finally having that concept click is also exquisite. Problem-solving is something I have been doing for the past six years in my current job, and I don't think I will ever get tired of it.&lt;/p&gt;
+&lt;h2&gt;Learning&lt;/h2&gt;
+&lt;p&gt;The other thing that I can never stop doing is learning. No matter how much you have learnt about programming, there always seems to be more to learn. I have spent many years dabbling in programming, and I've barely scratched the surface. There's plenty more learning to keep me going for the rest of my life, and thank goodness for that.&lt;/p&gt;
+&lt;h2&gt;The Malleable Medium&lt;/h2&gt;
+&lt;p&gt;You're not reliant on hardware, cabling between different routers and switches, new hardware and other physical things. You can code whatever it is you want, and all you need most of the time is your laptop. You can deploy things to AWS or Digital Ocean with the click of a mouse and have something to show off to your friends and family. You can create some piece of code that millions of people use all from this one portable thing. Because of this malleability, you can also break things without getting yourself into a state that is irreversible. Do you want to try a new method on a database? Copy your database, make changes to that new database then see whether the changes worked. There have been times in networking where I've wasted days of my life trying to get something back into a good state, even on just a proof of concept. The idea of software-defined networks is becoming more prominent, which will be bringing some of the wonders of this malleable medium into networking.&lt;/p&gt;
+&lt;h2&gt;What Am I Currently Missing?&lt;/h2&gt;
+&lt;p&gt;So, the main things that are currently missing for me are "Making Beautiful Things" and "The Malleable Medium".&lt;/p&gt;
+&lt;p&gt;So, if I want to make beautiful things, I think I am going to have to switch jobs. Networks are not sexy, and I don't think they ever will be. This sexiness makes me want to look more deeply into front-end web development and to study more UX Design. I know this will be a lot of work, as I currently have a minimal background in this area, but I think it's something I'm interested enough in to immerse myself in it.&lt;/p&gt;
+&lt;p&gt;With the malleable medium, I mentioned software-defined networking, and how I could bring that into my current role. Even if I were to bring this into my current position however, I would need to have the firmest grasp I can on programming before I could utilise software-defined networks in sensible ways.&lt;/p&gt;
+&lt;p&gt;Programming is also useful in so many different roles that it takes me out of the pigeonhole of just being the network guy. It will also allow me to provide services for the network. If people could request firewall rules or connectivity for example between two different virtual machines, I would love to be able to provide that through a website. I could automate those changes if they met specific rules, or I could quickly approve or reject requests that didn't match these rules (maybe through GitLab merge requests..).&lt;/p&gt;
+&lt;p&gt;So, whether I decide to stay in my current role in the long-term or I decide to switch into web development, the skills I am now learning to provide more than small scripts will be useful.&lt;/p&gt;</content></entry></feed>
