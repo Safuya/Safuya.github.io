@@ -46,11 +46,10 @@ changes to my design I went through as I learnt more about what I was doing.
 This week I'm going to cover buying the components through to getting a
 Micropython REPL on the ESP8266 microcontroller.</p>
 <h2>Buying the components</h2>
-<p>Get all of the components from the (Adafruit Article)
-[https://learn.adafruit.com/adafruit-io-air-quality-monitor#]. If you're in the
-UK though, don't buy your components from the Adafruit store. They're a great
+<p>Get all of the components from the <a href="https://learn.adafruit.com/adafruit-io-air-quality-monitor#">Adafruit Article</a>.
+If you're in the UK though, don't buy your components from the Adafruit store. They're a great
 company with great learning resources, but you're much better off buying from
-(The Pi Hut)[https://thepihut.com/]. The Pi Hut is cheaper than the
+<a href="https://thepihut.com/">The Pi Hut</a>. The Pi Hut is cheaper than the
 alternatives (like Amazon), and they also seem to have some good learning
 resources that you're supporting. I ended up buying my first bunch of
 components from Adafruit and had to pay roughly £20 in fees. If you're in the
@@ -64,15 +63,15 @@ myself a bundle of male to male cables for ease of use with the breadboard.</p>
 got that far as of writing this. I'll be sure to come back and edit this once
 I know.</p>
 <h2>Wiring</h2>
-<p>For the wiring, I followed the (Adafruit Article's Wiring and Assembly section)
-[https://learn.adafruit.com/adafruit-io-air-quality-monitor/arduino-wiring-and-assembly]
+<p>For the wiring, I followed the
+<a href="https://learn.adafruit.com/adafruit-io-air-quality-monitor/arduino-wiring-and-assembly">Adafruit Article's Wiring and Assembly section</a>
 exactly. Electronics isn't my area of expertise, and I want to learn more here.</p>
 <h2>Getting the ESP 8266 to talk to the MAC</h2>
 <p>My Mac didn't have the correct drivers. Before finding anything to install, I
 checked I could connect a different board. I had a Circuit Playground Express
 which connected, so I was sure my USB cable was ok, and the USB port on my Mac
-was ok. Download the driver from (Silicon Labs)
-[https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers].</p>
+was ok. Download the driver from
+<a href="https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers">Silicon Labs</a>.</p>
 <p>You should then see your device with the following command.</p>
 <div class="highlight"><pre><span></span>ll /dev/cu.SLAB_USBtoUART
 </pre></div>
@@ -86,7 +85,7 @@ virtualenv.</p>
 </pre></div>
 
 
-<p>After that, you need to (download Micropython)[http://www.micropython.org/download].
+<p>After that, you need to <a href="http://www.micropython.org/download">download Micropython</a>.
 You can then use esptool tool to erase the current flash:</p>
 <div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">esptool</span> <span class="c1">--port /dev/cu.SLAB_USBtoUART erase_flash</span>
 </pre></div>
