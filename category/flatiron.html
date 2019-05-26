@@ -3,31 +3,31 @@
 <head>
         <meta charset="utf-8" />
         <title>Rob's Blog - Flatiron</title>
-        <link rel="stylesheet" href="https://safuya.net/theme/css/main.css" />
-        <link href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Rob's Blog Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://safuya.net/">Rob's Blog </a></h1>
+                <h1><a href="/">Rob's Blog </a></h1>
                 <nav><ul>
-                    <li class="active"><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
-                    <li><a href="https://safuya.net/category/general.html">General</a></li>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                    <li><a href="/category/general.html">General</a></li>
+                    <li><a href="/category/iot.html">IOT</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://safuya.net/dealing-with-asynchronous-code.html">Dealing with Asynchronous Code</a></h1>
+                    <h1 class="entry-title"><a href="/dealing-with-asynchronous-code.html">Dealing with Asynchronous Code</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2018-07-02T20:14:00+01:00">
                 Published: Mon 02 July 2018
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info --><p>Synchronous code is straightforward for me to understand. When you write everything, you write it in order. I know that execution always happens in the same order. When it comes to Javascript, however, code starts becoming asynchronous, meaning that it will not usually run in the same order.</p>
 <p>Requests to an API can be put into the background while waiting for a response and be dealt with later. If you put something in the oven to cook, you don't usually stand in front of it waiting for whatever your food to be ready. You will go and carry out some other tasks and come back once it is ready. Javascript makes calls asynchronous by default for a lot of different actions. If you're writing to a file or making a call to a website, you will come across this.</p>
@@ -53,10 +53,10 @@
 
 
 <p>The output of this if run becomes:</p>
-<div class="highlight"><pre><span></span>&gt; &quot;calling&quot;
-&gt; &quot;Are we there yet?&quot;
-&gt; &quot;You have arrived.&quot;
-&gt; &quot;Welcome to your destination&quot;
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="ss">&quot;calling&quot;</span>
+<span class="o">&gt;</span> <span class="ss">&quot;Are we there yet?&quot;</span>
+<span class="o">&gt;</span> <span class="ss">&quot;You have arrived.&quot;</span>
+<span class="o">&gt;</span> <span class="ss">&quot;Welcome to your destination&quot;</span>
 </pre></div>
 
 
@@ -86,7 +86,7 @@
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/certificate-manager.html" rel="bookmark"
+                    <h1><a href="/certificate-manager.html" rel="bookmark"
                            title="Permalink to Certificate Manager">Certificate Manager</a></h1>
                 </header>
 
@@ -97,19 +97,19 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>For my project, I made a website to manage SSL certificates. In my current job, finding out which expiring certificates are hosted on which load balancers is one of the main problems I have. The repository for this project can be found <a href="https://github.com/safuya/certificate-manager">here</a>.</p>
 <p>To do this, I first came up …</p>
-                <a class="readmore" href="https://safuya.net/certificate-manager.html">read more</a>
+                <a class="readmore" href="/certificate-manager.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/the-root-of-absolutely-relatively-awesome-links.html" rel="bookmark"
+                    <h1><a href="/the-root-of-absolutely-relatively-awesome-links.html" rel="bookmark"
                            title="Permalink to The Root of Absolutely Relatively Awesome Links">The Root of Absolutely Relatively Awesome Links</a></h1>
                 </header>
 
@@ -120,18 +120,18 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>There have been some questions in the Slack in the past on broken links. This post is going to try to give a succinct explanation of different link types, and how they relate to each other for your Sinatra project and going forward with none magic frameworks such as Rails …</p>
-                <a class="readmore" href="https://safuya.net/the-root-of-absolutely-relatively-awesome-links.html">read more</a>
+                <a class="readmore" href="/the-root-of-absolutely-relatively-awesome-links.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/device-manager.html" rel="bookmark"
+                    <h1><a href="/device-manager.html" rel="bookmark"
                            title="Permalink to Device Manager">Device Manager</a></h1>
                 </header>
 
@@ -142,22 +142,22 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>For my Sinatra project, I am making a device manager website. This is for managing consumer routers and set top boxes in our test environment. The website meets the below requirements:
-<em> Be an MVC website.
-</em> Use ActiveRecord with Sinatra.
-<em> Have a devices, groups and users table.
-</em> Devices belong to a …</p>
-                <a class="readmore" href="https://safuya.net/device-manager.html">read more</a>
+* Be an MVC website.
+* Use ActiveRecord with Sinatra.
+* Have a devices, groups and users table.
+* Devices belong to a …</p>
+                <a class="readmore" href="/device-manager.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/map-shorthand.html" rel="bookmark"
+                    <h1><a href="/map-shorthand.html" rel="bookmark"
                            title="Permalink to Map Shorthand">Map Shorthand</a></h1>
                 </header>
 
@@ -168,9 +168,9 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>Something I found out about recently due to using Rubocop is a shorthand for a map.</p>
 <p>Take the contrived example of our cheesecake instances.</p>
@@ -187,13 +187,13 @@
 <span class="n">raspberry_cheesecake</span> <span class="o">=</span> <span class="no">CheeseCake</span><span class="o">.</span><span class="n">new</span>
 <span class="n">raspberry_cheesecake</span><span class="o">.</span><span class="n">flavour</span> <span class="o">=</span> <span class="s1">&#39;raspberry&#39;</span>
 <span class="n">raspberry_cheesecake</span><span class="o">.</span><span class="n">make …</span></pre></div>
-                <a class="readmore" href="https://safuya.net/map-shorthand.html">read more</a>
+                <a class="readmore" href="/map-shorthand.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/getting-started-on-your-cli-gem.html" rel="bookmark"
+                    <h1><a href="/getting-started-on-your-cli-gem.html" rel="bookmark"
                            title="Permalink to Getting started on your CLI Gem">Getting started on your CLI Gem</a></h1>
                 </header>
 
@@ -204,20 +204,20 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>This is a step by step tutorial on getting started with your CLI gem, and how to do that using test-driven development.</p>
 <h2>How?</h2>
 <p>The concept of test driven development is straightforward. You write out tests before you start writing your code. You then write code to get your tests passing …</p>
-                <a class="readmore" href="https://safuya.net/getting-started-on-your-cli-gem.html">read more</a>
+                <a class="readmore" href="/getting-started-on-your-cli-gem.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/groupreads.html" rel="bookmark"
+                    <h1><a href="/groupreads.html" rel="bookmark"
                            title="Permalink to Groupreads">Groupreads</a></h1>
                 </header>
 
@@ -228,18 +228,18 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>My CLI gem is called <a href="https://www.github.com/safuya/groupreads">groupreads</a>. It uses the Goodreads API. It gets the users list of groups, all of the currently read books in those groups and compares them against the users to read and read lists. It then outputs a list of books to add to their to-read …</p>
-                <a class="readmore" href="https://safuya.net/groupreads.html">read more</a>
+                <a class="readmore" href="/groupreads.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
+                    <h1><a href="/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
                            title="Permalink to Quick and Clean Guide to Ruby Gem Layout">Quick and Clean Guide to Ruby Gem Layout</a></h1>
                 </header>
 
@@ -250,19 +250,19 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that <a href="http://bundler.io/v1.16/guides/creating_gem.html">bundle recommends</a>. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).</p>
 <p>So, how …</p>
-                <a class="readmore" href="https://safuya.net/quick-and-clean-guide-to-ruby-gem-layout.html">read more</a>
+                <a class="readmore" href="/quick-and-clean-guide-to-ruby-gem-layout.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/building-an-unbeatable-tic-tac-toe-ai.html" rel="bookmark"
+                    <h1><a href="/building-an-unbeatable-tic-tac-toe-ai.html" rel="bookmark"
                            title="Permalink to Building An Unbeatable Tic Tac Toe AI">Building An Unbeatable Tic Tac Toe AI</a></h1>
                 </header>
 
@@ -273,20 +273,20 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>The first major challenge that I faced with the coding boot camp was building an unbeatable Tic-Tac-Toe AI. I have managed to create an algorithm to solve this problem, with only one move being hard coded.</p>
 <p>The overarching logic of my program is this the move method, found below.</p>
 <div class="highlight"><pre><span></span>    <span class="k">def …</span></pre></div>
-                <a class="readmore" href="https://safuya.net/building-an-unbeatable-tic-tac-toe-ai.html">read more</a>
+                <a class="readmore" href="/building-an-unbeatable-tic-tac-toe-ai.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/why-i-decided-to-learn-programming.html" rel="bookmark"
+                    <h1><a href="/why-i-decided-to-learn-programming.html" rel="bookmark"
                            title="Permalink to Why I Decided to Learn Programming">Why I Decided to Learn Programming</a></h1>
                 </header>
 
@@ -297,12 +297,12 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>To set the scene, I'm not entirely new to programming. I have been a hobbyist programmer since high school. I first started after going to a holiday camp, learning some basic. I have no memory of the language itself, but I made a game where you had to navigate through …</p>
-                <a class="readmore" href="https://safuya.net/why-i-decided-to-learn-programming.html">read more</a>
+                <a class="readmore" href="/why-i-decided-to-learn-programming.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
@@ -319,7 +319,6 @@
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/safuya/">GitHub</a></li>
                             <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>

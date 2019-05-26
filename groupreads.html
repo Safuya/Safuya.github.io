@@ -3,23 +3,23 @@
 <head>
         <meta charset="utf-8" />
         <title>Groupreads</title>
-        <link rel="stylesheet" href="https://safuya.net/theme/css/main.css" />
-        <link href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Rob's Blog Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://safuya.net/">Rob's Blog </a></h1>
+                <h1><a href="/">Rob's Blog </a></h1>
                 <nav><ul>
-                    <li class="active"><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
-                    <li><a href="https://safuya.net/category/general.html">General</a></li>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                    <li><a href="/category/general.html">General</a></li>
+                    <li><a href="/category/iot.html">IOT</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="https://safuya.net/groupreads.html" rel="bookmark"
+        <a href="/groupreads.html" rel="bookmark"
            title="Permalink to Groupreads">Groupreads</a></h1>
     </header>
 
@@ -30,9 +30,9 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->      <p>My CLI gem is called <a href="https://www.github.com/safuya/groupreads">groupreads</a>. It uses the Goodreads API. It gets the users list of groups, all of the currently read books in those groups and compares them against the users to read and read lists. It then outputs a list of books to add to their to-read list.</p>
 <h2>Layout</h2>
@@ -57,12 +57,12 @@
 <p>The gem was developed using test-driven development. Each test was written one at a time to provide the next piece of the puzzle that I required. I then ran the new test to make sure that it was failing. I then fixed the error messages provided by the test one by one until the test passed. I then refactored this test. Rspec was used to test the methods, Aruba and Cucumber were used to test the CLI. Pry was used to create breakpoints while solving issues. I created the develop branch while working on the code. When I completed development, I merged this branch back into master.</p>
 <h2>Future improvements</h2>
 <p>There are some future enhancements that I'd like to make to the gem. I have provided a list of these below.
-<em> Guide the user through setting up their environment with the setup file.
-</em> Extend the CLI to include all of the different methods.
-<em> Provide a help command on the CLI.
-</em> Improve the feature tests to check the output of the newbooks option.
-<em> Refactor the addition of the key-value pairs for the HTTP GETs into a method.
-</em> Create docs.</p>
+* Guide the user through setting up their environment with the setup file.
+* Extend the CLI to include all of the different methods.
+* Provide a help command on the CLI.
+* Improve the feature tests to check the output of the newbooks option.
+* Refactor the addition of the key-value pairs for the HTTP GETs into a method.
+* Create docs.</p>
     </div><!-- /.entry-content -->
 
   </article>
@@ -79,7 +79,6 @@
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/safuya/">GitHub</a></li>
                             <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>

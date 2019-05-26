@@ -3,54 +3,122 @@
 <head>
         <meta charset="utf-8" />
         <title>Rob's Blog</title>
-        <link rel="stylesheet" href="https://safuya.net/theme/css/main.css" />
-        <link href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Rob's Blog Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://safuya.net/">Rob's Blog </a></h1>
+                <h1><a href="/">Rob's Blog </a></h1>
                 <nav><ul>
-                    <li><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
-                    <li><a href="https://safuya.net/category/general.html">General</a></li>
+                    <li><a href="/category/flatiron.html">Flatiron</a></li>
+                    <li><a href="/category/general.html">General</a></li>
+                    <li><a href="/category/iot.html">IOT</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://safuya.net/touch-typing.html">Touch Typing</a></h1>
+                    <h1 class="entry-title"><a href="/esp-weather-station-part-1.html">ESP Weather Station (Part 1)</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2019-05-22T18:49:00+01:00">
-                Published: Wed 22 May 2019
+        <abbr class="published" title="2019-05-26T15:54:00+01:00">
+                Published: Sun 26 May 2019
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/general.html">General</a>.</p>
+<p>In <a href="/category/iot.html">IOT</a>.</p>
 
-</footer><!-- /.post-info --><p>I haven't been very active on my blog recently, so I thought I should try to
-get back into it with any topic. Lately, I've been trying to work on my touch
-typing. After many years of following my own method for typing, I figured it
-would be nice to do it properly, break those years of bad habits and build up
-to a better typing speed than the plateau I'd reached.</p>
-<p>I started working on my touch typing on 12th May, and I've been making sure to
-practice for 15 minutes per day. I've managed to complete my goal so far, and
-my typing has become more accurate. I also think I've reached and surpassed my
-typing speed before this. It is hard to tell because I've only been measuring
-my speed with the touch typing methods since starting, so I don't know what my
-typing speed was before this switch. I'm now averaging 45 to 55 words per
-minute on standard words. I still need practice on symbols, although I am
-ahead of my training tools expectations here due to the programming and shell
-practice throughout the day.</p>
-<p>One of the biggest problems I had initially was remembering the pattern for
-passwords. I had a period near the end of last week where I couldn't type with
-my old habit to enter my passwords, but I had to type very deliberately with
-touch typing to get them right. I have now gotten them to a reasonable speed,
-and with the amount I get to practice them, I'm sure I'll surpass the old
-speed soon.</p>
-<p>I think it has been helpful to me, and I would recommend programmers spend
-time on improving their typing habits.</p>                </article>
+</footer><!-- /.post-info --><p>This week and last week I've been making a weather station using an ESP8266
+Microcontroller. I started out using the Adafruit learning resource for this,
+which gives an excellent overview if you want to get everything working and
+don't want to customise anything. I want to customise several different things
+for my weather station, and I want to write some more of the code myself
+because I like writing code, and I want to know more about how everything is
+working.</p>
+<p>Below, I talk about some of the challenges I faced, along with some of the
+changes to my design I went through as I learnt more about what I was doing.
+This week I'm going to cover buying the components through to getting a
+Micropython REPL on the ESP8266 microcontroller.</p>
+<h2>Buying the components</h2>
+<p>Get all of the components from the (Adafruit Article)
+[https://learn.adafruit.com/adafruit-io-air-quality-monitor#]. If you're in the
+UK though, don't buy your components from the Adafruit store. They're a great
+company with great learning resources, but you're much better off buying from
+(The Pi Hut)[https://thepihut.com/]. The Pi Hut is cheaper than the
+alternatives (like Amazon), and they also seem to have some good learning
+resources that you're supporting. I ended up buying my first bunch of
+components from Adafruit and had to pay roughly £20 in fees. If you're in the
+US, go for it. They're a great company, and we should support them as much as
+possible.</p>
+<p>I also bought myself a few extra components on top of the suggested items. The
+first was a breadboard. I did have one of these, but I lent it to my Dad. He's
+still using it for his model railway, so I bought myself a new one. I also got
+myself a bundle of male to male cables for ease of use with the breadboard.</p>
+<p>The other thing to mention is, I suspect some solder is needed, but I haven't
+got that far as of writing this. I'll be sure to come back and edit this once
+I know.</p>
+<h2>Wiring</h2>
+<p>For the wiring, I followed the (Adafruit Article's Wiring and Assembly section)
+[https://learn.adafruit.com/adafruit-io-air-quality-monitor/arduino-wiring-and-assembly]
+exactly. Electronics isn't my area of expertise, and I want to learn more here.</p>
+<h2>Getting the ESP 8266 to talk to the MAC</h2>
+<p>My Mac didn't have the correct drivers. Before finding anything to install, I
+checked I could connect a different board. I had a Circuit Playground Express
+which connected, so I was sure my USB cable was ok, and the USB port on my Mac
+was ok. Download the driver from (Silicon Labs)
+[https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers].</p>
+<p>You should then see your device with the following command.</p>
+<div class="highlight"><pre><span></span>ll /dev/cu.SLAB_USBtoUART
+</pre></div>
+
+
+<h2>Installing Micropython</h2>
+<p>The next step was to install Micropython. This step requires installing
+esptool. You need a working version of python with pip. I installed it within a
+virtualenv.</p>
+<div class="highlight"><pre><span></span>pip install esptool
+</pre></div>
+
+
+<p>After that, you need to (download Micropython)[http://www.micropython.org/download].
+You can then use esptool tool to erase the current flash:</p>
+<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">esptool</span> <span class="c1">--port /dev/cu.SLAB_USBtoUART erase_flash</span>
+</pre></div>
+
+
+<p>and write the new image:</p>
+<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">esptool</span> <span class="c1">--port /dev/cu.SLAB_USBtoUART write_flash 0 ~/Downloads/esp8266-20190125-v1.10.bin</span>
+</pre></div>
+
+
+<h2>Connecting to the ESP 8266</h2>
+<p>First, find out your username:</p>
+<div class="highlight"><pre><span></span><span class="n">whoami</span>
+</pre></div>
+
+
+<p>In my example, this is roberthughes. Add yourself to the wheel group to give
+yourself permission to read and write to your device.</p>
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dscl</span> <span class="p">.</span> <span class="n">append</span> <span class="o">/</span><span class="n">Groups</span><span class="o">/</span><span class="n">wheel</span> <span class="n">GroupMembership</span> <span class="n">roberthughes</span>
+</pre></div>
+
+
+<p>You also need to change the permissions for your <code>uucp</code> directory to allow you
+to write the lock, allowing only one connection to your device at a time.</p>
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">775</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">spool</span><span class="o">/</span><span class="n">uucp</span>
+</pre></div>
+
+
+<p>Finally, you'll need to log out and log back into your account for the group
+change to take effect, then run:</p>
+<div class="highlight"><pre><span></span><span class="n">cu</span> <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cu</span><span class="p">.</span><span class="n">SLAB_USBtoUART</span> <span class="o">-</span><span class="n">s</span> <span class="mi">115200</span>
+</pre></div>
+
+
+<p>You should then be able to run python code:</p>
+<div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+</pre></div>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -59,7 +127,32 @@ time on improving their typing habits.</p>                </article>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/dealing-with-asynchronous-code.html" rel="bookmark"
+                    <h1><a href="/touch-typing.html" rel="bookmark"
+                           title="Permalink to Touch Typing">Touch Typing</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-05-22T18:49:00+01:00">
+                Published: Wed 22 May 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/general.html">General</a>.</p>
+
+</footer><!-- /.post-info -->                <p>I haven't been very active on my blog recently, so I thought I should try to
+get back into it with any topic. Lately, I've been trying to work on my touch
+typing. After many years of following my own method for typing, I figured it
+would be nice to …</p>
+                <a class="readmore" href="/touch-typing.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/dealing-with-asynchronous-code.html" rel="bookmark"
                            title="Permalink to Dealing with Asynchronous Code">Dealing with Asynchronous Code</a></h1>
                 </header>
 
@@ -70,19 +163,19 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>Synchronous code is straightforward for me to understand. When you write everything, you write it in order. I know that execution always happens in the same order. When it comes to Javascript, however, code starts becoming asynchronous, meaning that it will not usually run in the same order.</p>
 <p>Requests to …</p>
-                <a class="readmore" href="https://safuya.net/dealing-with-asynchronous-code.html">read more</a>
+                <a class="readmore" href="/dealing-with-asynchronous-code.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/certificate-manager.html" rel="bookmark"
+                    <h1><a href="/certificate-manager.html" rel="bookmark"
                            title="Permalink to Certificate Manager">Certificate Manager</a></h1>
                 </header>
 
@@ -93,19 +186,19 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>For my project, I made a website to manage SSL certificates. In my current job, finding out which expiring certificates are hosted on which load balancers is one of the main problems I have. The repository for this project can be found <a href="https://github.com/safuya/certificate-manager">here</a>.</p>
 <p>To do this, I first came up …</p>
-                <a class="readmore" href="https://safuya.net/certificate-manager.html">read more</a>
+                <a class="readmore" href="/certificate-manager.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/the-root-of-absolutely-relatively-awesome-links.html" rel="bookmark"
+                    <h1><a href="/the-root-of-absolutely-relatively-awesome-links.html" rel="bookmark"
                            title="Permalink to The Root of Absolutely Relatively Awesome Links">The Root of Absolutely Relatively Awesome Links</a></h1>
                 </header>
 
@@ -116,18 +209,18 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>There have been some questions in the Slack in the past on broken links. This post is going to try to give a succinct explanation of different link types, and how they relate to each other for your Sinatra project and going forward with none magic frameworks such as Rails …</p>
-                <a class="readmore" href="https://safuya.net/the-root-of-absolutely-relatively-awesome-links.html">read more</a>
+                <a class="readmore" href="/the-root-of-absolutely-relatively-awesome-links.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/device-manager.html" rel="bookmark"
+                    <h1><a href="/device-manager.html" rel="bookmark"
                            title="Permalink to Device Manager">Device Manager</a></h1>
                 </header>
 
@@ -138,22 +231,22 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>For my Sinatra project, I am making a device manager website. This is for managing consumer routers and set top boxes in our test environment. The website meets the below requirements:
-<em> Be an MVC website.
-</em> Use ActiveRecord with Sinatra.
-<em> Have a devices, groups and users table.
-</em> Devices belong to a …</p>
-                <a class="readmore" href="https://safuya.net/device-manager.html">read more</a>
+* Be an MVC website.
+* Use ActiveRecord with Sinatra.
+* Have a devices, groups and users table.
+* Devices belong to a …</p>
+                <a class="readmore" href="/device-manager.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/map-shorthand.html" rel="bookmark"
+                    <h1><a href="/map-shorthand.html" rel="bookmark"
                            title="Permalink to Map Shorthand">Map Shorthand</a></h1>
                 </header>
 
@@ -164,9 +257,9 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>Something I found out about recently due to using Rubocop is a shorthand for a map.</p>
 <p>Take the contrived example of our cheesecake instances.</p>
@@ -183,13 +276,13 @@ time on improving their typing habits.</p>                </article>
 <span class="n">raspberry_cheesecake</span> <span class="o">=</span> <span class="no">CheeseCake</span><span class="o">.</span><span class="n">new</span>
 <span class="n">raspberry_cheesecake</span><span class="o">.</span><span class="n">flavour</span> <span class="o">=</span> <span class="s1">&#39;raspberry&#39;</span>
 <span class="n">raspberry_cheesecake</span><span class="o">.</span><span class="n">make …</span></pre></div>
-                <a class="readmore" href="https://safuya.net/map-shorthand.html">read more</a>
+                <a class="readmore" href="/map-shorthand.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/getting-started-on-your-cli-gem.html" rel="bookmark"
+                    <h1><a href="/getting-started-on-your-cli-gem.html" rel="bookmark"
                            title="Permalink to Getting started on your CLI Gem">Getting started on your CLI Gem</a></h1>
                 </header>
 
@@ -200,20 +293,20 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>This is a step by step tutorial on getting started with your CLI gem, and how to do that using test-driven development.</p>
 <h2>How?</h2>
 <p>The concept of test driven development is straightforward. You write out tests before you start writing your code. You then write code to get your tests passing …</p>
-                <a class="readmore" href="https://safuya.net/getting-started-on-your-cli-gem.html">read more</a>
+                <a class="readmore" href="/getting-started-on-your-cli-gem.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/groupreads.html" rel="bookmark"
+                    <h1><a href="/groupreads.html" rel="bookmark"
                            title="Permalink to Groupreads">Groupreads</a></h1>
                 </header>
 
@@ -224,18 +317,18 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>My CLI gem is called <a href="https://www.github.com/safuya/groupreads">groupreads</a>. It uses the Goodreads API. It gets the users list of groups, all of the currently read books in those groups and compares them against the users to read and read lists. It then outputs a list of books to add to their to-read …</p>
-                <a class="readmore" href="https://safuya.net/groupreads.html">read more</a>
+                <a class="readmore" href="/groupreads.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="https://safuya.net/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
+                    <h1><a href="/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
                            title="Permalink to Quick and Clean Guide to Ruby Gem Layout">Quick and Clean Guide to Ruby Gem Layout</a></h1>
                 </header>
 
@@ -246,43 +339,19 @@ time on improving their typing habits.</p>                </article>
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->                <p>This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that <a href="http://bundler.io/v1.16/guides/creating_gem.html">bundle recommends</a>. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).</p>
 <p>So, how …</p>
-                <a class="readmore" href="https://safuya.net/quick-and-clean-guide-to-ruby-gem-layout.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://safuya.net/building-an-unbeatable-tic-tac-toe-ai.html" rel="bookmark"
-                           title="Permalink to Building An Unbeatable Tic Tac Toe AI">Building An Unbeatable Tic Tac Toe AI</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-02-09T07:51:00+00:00">
-                Published: Fri 09 February 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
-        </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
-
-</footer><!-- /.post-info -->                <p>The first major challenge that I faced with the coding boot camp was building an unbeatable Tic-Tac-Toe AI. I have managed to create an algorithm to solve this problem, with only one move being hard coded.</p>
-<p>The overarching logic of my program is this the move method, found below.</p>
-<div class="highlight"><pre><span></span>    <span class="k">def …</span></pre></div>
-                <a class="readmore" href="https://safuya.net/building-an-unbeatable-tic-tac-toe-ai.html">read more</a>
+                <a class="readmore" href="/quick-and-clean-guide-to-ruby-gem-layout.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
 <p class="paginator">
     Page 1 / 2
-        <a href="https://safuya.net/index2.html">&raquo;</a>
+        <a href="/index2.html">&raquo;</a>
 </p>
                 </section><!-- /#content -->
         <section id="extras" class="body">
@@ -297,7 +366,6 @@ time on improving their typing habits.</p>                </article>
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/safuya/">GitHub</a></li>
                             <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>

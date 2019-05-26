@@ -3,23 +3,23 @@
 <head>
         <meta charset="utf-8" />
         <title>Device Manager</title>
-        <link rel="stylesheet" href="https://safuya.net/theme/css/main.css" />
-        <link href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Rob's Blog Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://safuya.net/">Rob's Blog </a></h1>
+                <h1><a href="/">Rob's Blog </a></h1>
                 <nav><ul>
-                    <li class="active"><a href="https://safuya.net/category/flatiron.html">Flatiron</a></li>
-                    <li><a href="https://safuya.net/category/general.html">General</a></li>
+                    <li class="active"><a href="/category/flatiron.html">Flatiron</a></li>
+                    <li><a href="/category/general.html">General</a></li>
+                    <li><a href="/category/iot.html">IOT</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="https://safuya.net/device-manager.html" rel="bookmark"
+        <a href="/device-manager.html" rel="bookmark"
            title="Permalink to Device Manager">Device Manager</a></h1>
     </header>
 
@@ -30,25 +30,25 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://safuya.net/author/robert-hughes.html">Robert Hughes</a>
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
         </address>
-<p>In <a href="https://safuya.net/category/flatiron.html">Flatiron</a>.</p>
+<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
 
 </footer><!-- /.post-info -->      <p>For my Sinatra project, I am making a device manager website. This is for managing consumer routers and set top boxes in our test environment. The website meets the below requirements:
-<em> Be an MVC website.
-</em> Use ActiveRecord with Sinatra.
-<em> Have a devices, groups and users table.
-</em> Devices belong to a group. A device must have a serial number and model. It may also have a firmware version, last contact and last activation.
-<em> Groups can have many devices and many users. A group must have a name and a type.
-</em> Users can have many groups. A user must have a username, name, email and password. They may also have a group, and they may not do anything until they have a group.
-<em> Only admins can add devices.
-</em> Admins must approve new user signups before they can do anything.
-<em> Users may view devices if the device belongs to their group and their group is of type read.
-</em> Users may delete devices and edit the firmware version, last contact and last activation of the devices that belong to their group if their group is of type write. They also have all permissions granted through read.
-<em> Admins may view, delete, edit and add new devices. All devices will be a member of the admin group.
-</em> User emails and usernames must be unique and not blank.
-<em> Passwords must be 8 characters or longer, must contain 3 of 4 of either lowercase, uppercase, symbols and numbers.
-</em> Group names must be unique.
+* Be an MVC website.
+* Use ActiveRecord with Sinatra.
+* Have a devices, groups and users table.
+* Devices belong to a group. A device must have a serial number and model. It may also have a firmware version, last contact and last activation.
+* Groups can have many devices and many users. A group must have a name and a type.
+* Users can have many groups. A user must have a username, name, email and password. They may also have a group, and they may not do anything until they have a group.
+* Only admins can add devices.
+* Admins must approve new user signups before they can do anything.
+* Users may view devices if the device belongs to their group and their group is of type read.
+* Users may delete devices and edit the firmware version, last contact and last activation of the devices that belong to their group if their group is of type write. They also have all permissions granted through read.
+* Admins may view, delete, edit and add new devices. All devices will be a member of the admin group.
+* User emails and usernames must be unique and not blank.
+* Passwords must be 8 characters or longer, must contain 3 of 4 of either lowercase, uppercase, symbols and numbers.
+* Group names must be unique.
 * Device serial numbers must be unique.</p>
 <p>The database and model for my project has four main tables that can most easily be seen in the diagram below.</p>
 <p><img alt="entity relationship diagram" src="https://s3-eu-west-1.amazonaws.com/nemene-share/device-manager-erd.png"></p>
@@ -69,7 +69,6 @@
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://safuya.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://github.com/safuya/">GitHub</a></li>
                             <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
