@@ -18,7 +18,33 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/esp-weather-station-part-1.html">ESP Weather Station (Part 1)</a></h1>
+                    <h1 class="entry-title"><a href="/learning-electronics-basics.html">Learning Electronics Basics</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-06-03T14:40:00+01:00">
+                Published: Mon 03 June 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/iot.html">IOT</a>.</p>
+
+</footer><!-- /.post-info --><p>This week I haven't made as much progress as I wanted, but I have learned some valuable lessons. While trying to get my ESP8266 working with SCL/SDA on the BME280, I was finding that I couldn't see the device. I was attempting to use a couple of BME280. This was not working as expected. I attached an LED to the positive and negative to make sure that I was getting power, and it seemed to be okay. Then yesterday, I decided to move some of the circuits around and remove the extra components I had already added last week, but after this, I couldn't even get the LED to light up. This morning I had got to the point of thinking that my ESP8266 might be faulty. I decided to <a href="https://learn.adafruit.com/multimeters">learn how to use my multimeter</a>, which I purchased long ago. Follow through the tutorial on Adafruit if you don't know how, and keep it bookmarked for later. I have only used the continuity check and voltage check so far. The numbers that you're selecting on the voltage check are an "up to" number by the way. If you see a reading of 1, you've probably got the wrong setting.</p>
+<p>It turns out that using the feather connector and not soldering the joints makes for a terrible connection. I should have some solder arriving tomorrow, so I'm expecting some more progress next week. I'm looking forward to some exciting learning experiences with soldering.</p>
+<p>In other news, I've been continuing with my daily touch typing practice. I've been using a Pomodoro timer, with one session 25-minute session in the morning and one 25 minute session in the evening. I've been improving noticeably over time. I'm now consistently between 50 and 60 words per minute. I'm aiming to get above 70 words per minute, before treating myself to a mechanical keyboard. I may even decide to try making this myself.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/esp-weather-station-part-1.html" rel="bookmark"
+                           title="Permalink to ESP Weather Station (Part 1)">ESP Weather Station (Part 1)</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-05-26T15:54:00+01:00">
                 Published: Sun 26 May 2019
@@ -29,100 +55,13 @@
         </address>
 <p>In <a href="/category/iot.html">IOT</a>.</p>
 
-</footer><!-- /.post-info --><p>This week and last week I've been making a weather station using an ESP8266
+</footer><!-- /.post-info -->                <p>This week and last week I've been making a weather station using an ESP8266
 Microcontroller. I started out using the Adafruit learning resource for this,
 which gives an excellent overview if you want to get everything working and
-don't want to customise anything. I want to customise several different things
-for my weather station, and I want to write some more of the code myself
-because I like writing code, and I want to know more about how everything is
-working.</p>
-<p>Below, I talk about some of the challenges I faced, along with some of the
-changes to my design I went through as I learnt more about what I was doing.
-This week I'm going to cover buying the components through to getting a
-Micropython REPL on the ESP8266 microcontroller.</p>
-<h2>Buying the components</h2>
-<p>Get all of the components from the <a href="https://learn.adafruit.com/adafruit-io-air-quality-monitor#">Adafruit Article</a>.
-If you're in the UK though, don't buy your components from the Adafruit store. They're a great
-company with great learning resources, but you're much better off buying from
-<a href="https://thepihut.com/">The Pi Hut</a>. The Pi Hut is cheaper than the
-alternatives (like Amazon), and they also seem to have some good learning
-resources that you're supporting. I ended up buying my first bunch of
-components from Adafruit and had to pay roughly £20 in fees. If you're in the
-US, go for it. They're a great company, and we should support them as much as
-possible.</p>
-<p>I also bought myself a few extra components on top of the suggested items. The
-first was a breadboard. I did have one of these, but I lent it to my Dad. He's
-still using it for his model railway, so I bought myself a new one. I also got
-myself a bundle of male to male cables for ease of use with the breadboard.</p>
-<p>The other thing to mention is, I suspect some solder is needed, but I haven't
-got that far as of writing this. I'll be sure to come back and edit this once
-I know.</p>
-<h2>Wiring</h2>
-<p>For the wiring, I followed the
-<a href="https://learn.adafruit.com/adafruit-io-air-quality-monitor/arduino-wiring-and-assembly">Adafruit Article's Wiring and Assembly section</a>
-exactly. Electronics isn't my area of expertise, and I want to learn more here.</p>
-<h2>Getting the ESP 8266 to talk to the MAC</h2>
-<p>My Mac didn't have the correct drivers. Before finding anything to install, I
-checked I could connect a different board. I had a Circuit Playground Express
-which connected, so I was sure my USB cable was ok, and the USB port on my Mac
-was ok. Download the driver from
-<a href="https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers">Silicon Labs</a>.</p>
-<p>You should then see your device with the following command.</p>
-<div class="highlight"><pre><span></span>ll /dev/cu.SLAB_USBtoUART
-</pre></div>
-
-
-<h2>Installing Micropython</h2>
-<p>The next step was to install Micropython. This step requires installing
-esptool. You need a working version of python with pip. I installed it within a
-virtualenv.</p>
-<div class="highlight"><pre><span></span>pip install esptool
-</pre></div>
-
-
-<p>After that, you need to <a href="http://www.micropython.org/download">download Micropython</a>.
-You can then use esptool tool to erase the current flash:</p>
-<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">esptool</span> <span class="c1">--port /dev/cu.SLAB_USBtoUART erase_flash</span>
-</pre></div>
-
-
-<p>and write the new image:</p>
-<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">esptool</span> <span class="c1">--port /dev/cu.SLAB_USBtoUART write_flash 0 ~/Downloads/esp8266-20190125-v1.10.bin</span>
-</pre></div>
-
-
-<h2>Connecting to the ESP 8266</h2>
-<p>First, find out your username:</p>
-<div class="highlight"><pre><span></span><span class="n">whoami</span>
-</pre></div>
-
-
-<p>In my example, this is roberthughes. Add yourself to the wheel group to give
-yourself permission to read and write to your device.</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dscl</span> <span class="p">.</span> <span class="n">append</span> <span class="o">/</span><span class="n">Groups</span><span class="o">/</span><span class="n">wheel</span> <span class="n">GroupMembership</span> <span class="n">roberthughes</span>
-</pre></div>
-
-
-<p>You also need to change the permissions for your <code>uucp</code> directory to allow you
-to write the lock, allowing only one connection to your device at a time.</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">775</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">spool</span><span class="o">/</span><span class="n">uucp</span>
-</pre></div>
-
-
-<p>Finally, you'll need to log out and log back into your account for the group
-change to take effect, then run:</p>
-<div class="highlight"><pre><span></span><span class="n">cu</span> <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cu</span><span class="p">.</span><span class="n">SLAB_USBtoUART</span> <span class="o">-</span><span class="n">s</span> <span class="mi">115200</span>
-</pre></div>
-
-
-<p>You should then be able to run python code:</p>
-<div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
-</pre></div>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+don't want to customise anything. I want to customise several different things …</p>
+                <a class="readmore" href="/esp-weather-station-part-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -322,29 +261,6 @@ would be nice to …</p>
 
 </footer><!-- /.post-info -->                <p>My CLI gem is called <a href="https://www.github.com/safuya/groupreads">groupreads</a>. It uses the Goodreads API. It gets the users list of groups, all of the currently read books in those groups and compares them against the users to read and read lists. It then outputs a list of books to add to their to-read …</p>
                 <a class="readmore" href="/groupreads.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/quick-and-clean-guide-to-ruby-gem-layout.html" rel="bookmark"
-                           title="Permalink to Quick and Clean Guide to Ruby Gem Layout">Quick and Clean Guide to Ruby Gem Layout</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-02-17T11:30:00+00:00">
-                Published: Sat 17 February 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
-        </address>
-<p>In <a href="/category/flatiron.html">Flatiron</a>.</p>
-
-</footer><!-- /.post-info -->                <p>This morning, I've been working on my Gem, and I ran into the problem of understanding the layout that <a href="http://bundler.io/v1.16/guides/creating_gem.html">bundle recommends</a>. Previously I was setting up my code so that all of my classes were in separate files (right), but were in not within the overall module (wrong).</p>
-<p>So, how …</p>
-                <a class="readmore" href="/quick-and-clean-guide-to-ruby-gem-layout.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
