@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Rob's Blog - Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Rob's Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/flatiron.html">Flatiron</a></li>
+                    <li><a href="/category/general.html">General</a></li>
+                    <li><a href="/category/iot.html">IOT</a></li>
+                    <li class="active"><a href="/category/python.html">Python</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/audio2book-my-first-pypi-project.html">Audio2book - My First PyPi project</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-07-25T17:22:00+01:00">
+                Published: Thu 25 July 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/robert-hughes.html">Robert Hughes</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+
+</footer><!-- /.post-info --><p>I developed and published my first application to PyPi last week. This involved
+a number of different stages and has involved into a project that I'm using to
+test various areas I haven't explored much in my professional work, and tools
+that I haven't had a chance to play with in my professional experience.</p>
+<h2>In the beginning there was a problem...</h2>
+<p>This project started 7 months ago when I wanted to convert audiobook times into
+the number of book pages read. To follow along, you can see the project at this
+stage <a href="https://github.com/safuya/books/tree/3ff9caae72f5f56726505849165322f854ce8747">here</a>.</p>
+<p>At this point it used a lambda to parse the input before turning it into a
+datetime. It worked, but as can be seen, I didn't really know the power of the
+Python datetime libraries at this point. It included some basic test coverage,
+and everything worked reasonably well. I knew I wanted to convert it to a pip
+installable package at some point, but I moved on to other things.</p>
+<h2>A refactor and a feature</h2>
+<p>There was a small refactor at one point to change how an import happened, as
+well as removing a test.</p>
+<p>Shortly after this, I updated the code to allow for hours, minutes and seconds
+as well as minutes and seconds. Extra tests were added, but the lambda had an
+offspring.</p>
+<h2>Test coverage and mutation testing</h2>
+<p>The next set of changes came near the end of June when I was looking at testing
+as part of the 100 days of Python course and I added test coverage, trying to
+get up to 100% test coverage outside of the main file. This involved refactoring
+and some pytest options.</p>
+<p>The other thing that I added at this point was mutation testing. At this point
+I didn't really explore the output of the mutation testing, which would come
+back to bite me later in the project. <a href="https://github.com/safuya/books/tree/3e3410e68d59d50c44eb57ba7c9768b3cfe41e07">This</a>
+is the repository at this point.</p>
+<h2>Logging</h2>
+<p>The next step was to add some logging for this application. I did this using
+logbook as part of the 100 days of code course when doing the logging section.</p>
+<p>The logging was flawed at this stage, and I only found this out later when
+turning it into a pip installable application. Overall, very little logging
+needed to be added. I may change around the logging in the future.</p>
+<p>For the third day of the logging module, I had some spare time outside of the
+logging, so I added the setup.py and additional components needed to install
+this through pip. It was soon after this I realised that my logs followed me
+around.</p>
+<h2>Bug fixes, refactoring and CI/CD</h2>
+<p>The final set of changes were made a couple of days ago when doing the
+refactoring part of 100 days of Python.</p>
+<p>The first thing I did in this step was to fix the logging to stop it working on
+the current directory. I did this using the path library. I also turned it into
+a function with an argument to allow this. I originally had lru_cache from
+functools in front of it to stop each invocation recreating the log object, but
+I removed this while debugging and never readded it. I've raised a ticket on
+this with a good first issue label if anyone wants to contribute.</p>
+<p>I also added circleci to automate testing of the project on new pull requests.
+Learning to use circleci was interesting, though I'm glad I put it off for so
+long. In the previous state without workflows I think I would have been
+disappointed. Workflows make things much nicer.</p>
+<p>As part of the automated testing with circleci, I also had failures because of
+mutmut's tests failing. I previously hadn't seen anything wrong, or perhaps
+didn't investigate the failures enough because it didn't stop deployments. I
+now have a better understanding of how mutmut works. It is a useful tool to
+point out holes in your testing, and what could go wrong due to those holes.
+One of the big areas I had to patch up was the logging.</p>
+<p>After adding the automated tests, I also wanted to get automated deployments
+working to PyPi. This was a relatively easy task that didn't involve much extra
+work, but did involve more exploration of workflows. This is the first point I
+would have ran into the limitations of the circleci workflow before version
+2.1 of the API. As part of this, I did have to convert the readme to
+restructured text, because for some reason the markdown formatting wasn't
+working, despite updating setuptools and pip on my installation.</p>
+<h2>Conclusion</h2>
+<p>I'm pretty happy about where the project currently is. I would like to look at
+using additional interfaces. The big one that would benefit me is making it be
+triggered by Alexa. I'll play with this at some point, possibly after the 100
+days of code though, as I don't think it's related to any of the topics
+covered. I have also raised issues around documentation for the code of conduct
+and the contributors guide.</p>
+<p>I may make a web interface and API for it when I get to those parts of the
+course, but I can't see myself using this myself or hosting it in the longterm.
+A better bet for the web interface would be the speedtesting application that
+I've been working on. I'll talk about that more next time though.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/safuya/">GitHub</a></li>
+                            <li><a href="https://www.linkedin.com/in/robert-hughes-safuya/">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
